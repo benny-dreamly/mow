@@ -57,7 +57,7 @@ class BanjoTooieWorld(World):
     """
 
     game: str = "Banjo-Tooie"
-    version = "V4.6.1"
+    version = "V4.6.2"
     web = BanjoTooieWeb()
     author: str = "jjjj12212"
     topology_present = True
