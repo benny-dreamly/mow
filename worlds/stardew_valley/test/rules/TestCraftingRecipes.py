@@ -5,6 +5,7 @@ from ...data.craftable_data import all_crafting_recipes_by_name
 
 class TestCraftsanityLogic(SVTestBase):
     options = {
+        options.SeasonRandomization.internal_name: options.SeasonRandomization.option_disabled,
         options.SkillProgression.internal_name: options.SkillProgression.option_progressive,
         options.BuildingProgression.internal_name: options.BuildingProgression.option_progressive,
         options.Cropsanity.internal_name: options.Cropsanity.option_enabled,
@@ -19,6 +20,7 @@ class TestCraftsanityLogic(SVTestBase):
         self.collect([self.create_item("Progressive Fishing Rod")] * 4)
         self.collect([self.create_item("Progressive Sword")] * 4)
         self.collect([self.create_item("Progressive Mine Elevator")] * 24)
+        self.collect([self.create_item("Progressive Pan")] * 4)
         self.collect([self.create_item("Mining Level")] * 10)
         self.collect([self.create_item("Combat Level")] * 10)
         self.collect([self.create_item("Fishing Level")] * 10)

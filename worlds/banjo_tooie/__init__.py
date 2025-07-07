@@ -33,13 +33,13 @@ components.append(Component("Banjo-Tooie Client", func=run_client, component_typ
 #NOTE! For Backward Compatability, don't use type str|None. multi types not allowed on older Pythons
 class BanjoTooieWeb(WebWorld):
     setup_en = Tutorial("Setup Banjo-Tooie",
-        """A guide to setting up MultiworldGG Banjo-Tooie on your computer.""",
+        """A guide to setting up Archipelago Banjo-Tooie on your computer.""",
         "English",
         "setup_en.md",
         "setup/en",
         ["Beebaleen"])
     setup_fr = Tutorial("Setup Banjo-Tooie",
-        """A guide to setting up MultiworldGG Banjo-Tooie on your computer.""",
+        """A guide to setting up Archipelago Banjo-Tooie on your computer.""",
         "French",
         "setup_fr.md",
         "setup/fr",
@@ -59,7 +59,6 @@ class BanjoTooieWorld(World):
     game: str = "Banjo-Tooie"
     version = "V4.6.2"
     web = BanjoTooieWeb()
-    author: str = "jjjj12212"
     topology_present = True
     # item_name_to_id = {name: data.btid for name, data in all_item_table.items()}
     item_name_to_id = {}

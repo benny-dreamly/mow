@@ -34,24 +34,25 @@ class MoneyLogic(BaseLogic):
         clint_rule = self.logic.region.can_reach_all(Region.blacksmith, Region.mines_floor_5)
         robin_rule = self.logic.region.can_reach_all(Region.carpenter, Region.secret_woods)
         shipping_rule = self.logic.shipping.can_use_shipping_bin
+        farming_rule = self.logic.farming.can_plant_and_grow_item(Season.not_winter)
 
         if amount <= 2500:
             selling_any_rule = pierre_rule | willy_rule | clint_rule | robin_rule | shipping_rule
             return selling_any_rule
 
         if amount <= 5000:
-            selling_all_rule = (pierre_rule & willy_rule & clint_rule & robin_rule) | shipping_rule
+            selling_all_rule = (pierre_rule & farming_rule) | (pierre_rule & willy_rule & clint_rule & robin_rule) | shipping_rule
             return selling_all_rule
 
         if amount <= 10000:
-            return shipping_rule
+            return shipping_rule & farming_rule
 
         seed_rules = self.logic.region.can_reach(Region.pierre_store)
         if amount <= 40000:
-            return shipping_rule & seed_rules
+            return shipping_rule & seed_rules & farming_rule
 
         percent_progression_items_needed = min(90, amount // 20000)
-        return shipping_rule & seed_rules & HasProgressionPercent(self.player, percent_progression_items_needed)
+        return shipping_rule & seed_rules & farming_rule & HasProgressionPercent(self.player, percent_progression_items_needed)
 
     @cache_self1
     def can_spend(self, amount: int) -> StardewRule:
@@ -80,7 +81,7 @@ class MoneyLogic(BaseLogic):
         item_rules = []
         if source.items_price is not None:
             for price, item in source.items_price:
-                item_rules.append(self.logic.has(item) & self.logic.grind.can_grind_item(price, item))
+                item_rules.append(self.logic.grind.can_grind_item(price, item))
 
         region_rule = self.logic.region.can_reach(source.shop_region)
 
@@ -107,10 +108,14 @@ class MoneyLogic(BaseLogic):
             return self.can_spend_walnut(amount)
         if currency == MemeCurrency.code or currency == MemeCurrency.energy or currency == MemeCurrency.blood:
             return self.logic.true_
-        if (currency == MemeCurrency.clic or currency == MemeCurrency.steps) and amount < 100:
+        if currency == MemeCurrency.clic and amount < 100:
             return self.logic.true_
-        if currency == MemeCurrency.clic or currency == MemeCurrency.steps or currency == MemeCurrency.time:
+        if currency == MemeCurrency.steps and amount < 6000:
+            return self.logic.true_
+        if currency == MemeCurrency.clic or currency == MemeCurrency.time:
             return self.logic.time.has_lived_months(1)
+        if currency == MemeCurrency.steps:
+            return self.logic.time.has_lived_months(amount // 5000)
         if currency == MemeCurrency.cookies:
             return self.logic.time.has_lived_months(amount // 10000)
         if currency == MemeCurrency.child:
@@ -143,7 +148,7 @@ class MoneyLogic(BaseLogic):
                 return self.logic.time.has_lived_months(amount)
             return self.logic.false_
 
-        return self.logic.has(currency) & self.logic.grind.can_grind_item(amount)
+        return self.logic.grind.can_grind_item(amount, currency)
 
     # Should be cached
     def can_trade_at(self, region: str, currency: str, amount: int) -> StardewRule:

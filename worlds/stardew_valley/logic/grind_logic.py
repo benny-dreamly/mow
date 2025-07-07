@@ -18,7 +18,7 @@ PERCENT_REQUIRED_FOR_MAX_MEDIUM_ITEM = 24
 EASY_ITEMS = {Material.wood, Material.stone, Material.fiber, Material.sap}
 MIN_EASY_ITEMS = 300
 MAX_EASY_ITEMS = 2997
-PERCENT_REQUIRED_FOR_MAX_EASY_ITEM = 6
+PERCENT_REQUIRED_FOR_MAX_EASY_ITEM = 8
 
 
 class GrindLogicMixin(BaseLogicMixin):
@@ -48,9 +48,8 @@ class GrindLogic(BaseLogic):
 
     def can_grind_prize_tickets(self, quantity: int) -> StardewRule:
         claiming_rule = self.logic.region.can_reach(Region.mayor_house)
-        return self.logic.and_(claiming_rule, self.logic.has(Currency.prize_ticket),
-                               # Assuming two per month if the player does not grind it.
-                               self.logic.time.has_lived_months(quantity // 2))
+        help_wanted_rules = self.logic.quest.can_complete_help_wanteds(quantity * 3)
+        return self.logic.and_(claiming_rule, self.logic.has(Currency.prize_ticket), help_wanted_rules)
 
     def can_grind_fishing_treasure_chests(self, quantity: int) -> StardewRule:
         return self.logic.and_(self.logic.has(WaterChest.fishing_chest),
@@ -72,10 +71,12 @@ class GrindLogic(BaseLogic):
                                self.logic.time.has_lived_months(quantity // 1000))
 
     def can_grind_item(self, quantity: int, item: str | None = None) -> StardewRule:
-        if item in EASY_ITEMS:
-            return self.logic.grind.can_grind_easy_item(quantity)
-        else:
+        if item is None:
             return self.logic.grind.can_grind_medium_item(quantity)
+
+        if item in EASY_ITEMS:
+            return self.logic.grind.can_grind_easy_item(quantity) & self.logic.has(item)
+        return self.logic.grind.can_grind_medium_item(quantity) & self.logic.has(item)
 
     @cache_self1
     def can_grind_medium_item(self, quantity: int) -> StardewRule:

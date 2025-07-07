@@ -85,7 +85,6 @@ from ..strings.material_names import Material
 from ..strings.metal_names import Ore, MetalBar, Mineral, Fossil
 from ..strings.monster_drop_names import Loot
 from ..strings.monster_names import Monster
-from ..strings.quest_names import Quest
 from ..strings.region_names import Region, LogicRegion
 from ..strings.season_names import Season
 from ..strings.seed_names import Seed, TreeSeed
@@ -93,7 +92,6 @@ from ..strings.skill_names import Skill
 from ..strings.special_item_names import SpecialItem
 from ..strings.tool_names import Tool, ToolMaterial, FishingRod
 from ..strings.villager_names import NPC
-from ..strings.wallet_item_names import Wallet
 
 logger = logging.getLogger(__name__)
 
@@ -159,7 +157,7 @@ class StardewLogic(ReceivedLogicMixin, HasLogicMixin, RegionLogicMixin, Travelin
             "Magic Rock Candy": self.region.can_reach(Region.desert) & self.has("Prismatic Shard"),
             "Muscle Remedy": self.money.can_spend_at(Region.hospital, 1000),
             "Stardrop": self.received("Stardrop"),
-            "Iridium Snake Milk": self.quest.can_complete_quest(Quest.cryptic_note) & self.region.can_reach(Region.skull_cavern_100),
+            "Iridium Snake Milk": self.quest.can_drink_snake_milk(),
             # self.has(Ingredient.vinegar)),
             # self.received("Deluxe Fertilizer Recipe") & self.has(MetalBar.iridium) & self.has(SVItem.sap),
             # | (self.ability.can_cook() & self.relationship.has_hearts(NPC.emily, 3) & self.has(Forageable.leek) & self.has(Forageable.dandelion) &
@@ -250,7 +248,7 @@ class StardewLogic(ReceivedLogicMixin, HasLogicMixin, RegionLogicMixin, Travelin
             Fossil.fossilized_ribs: self.region.can_reach(Region.island_south) & self.tool.has_tool(Tool.hoe) & self.received("Open Professor Snail Cave"),
             Fossil.fossilized_skull: self.action.can_open_geode(Geode.golden_coconut),
             Fossil.fossilized_spine: self.fishing.can_fish_at(Region.dig_site),
-            Fossil.fossilized_tail: self.action.can_pan_at(Region.dig_site, ToolMaterial.copper),
+            Fossil.fossilized_tail: self.action.can_pan_at(Region.dig_site, ToolMaterial.iridium),
             Fossil.mummified_bat: self.region.can_reach(Region.volcano_floor_10),
             Fossil.mummified_frog: self.region.can_reach(Region.island_east) & self.tool.has_scythe(),
             Fossil.snake_skull: self.region.can_reach(Region.dig_site) & self.tool.has_tool(Tool.hoe),
@@ -260,7 +258,7 @@ class StardewLogic(ReceivedLogicMixin, HasLogicMixin, RegionLogicMixin, Travelin
             Geode.geode: self.mine.can_mine_in_the_mines_floor_1_40(),
             Geode.golden_coconut: self.region.can_reach(Region.island_north),
             Geode.magma: self.mine.can_mine_in_the_mines_floor_81_120() | (self.has(Fish.lava_eel) & self.building.has_building(Building.fish_pond)),
-            Geode.omni: self.mine.can_mine_in_the_mines_floor_41_80() | self.region.can_reach(Region.desert) | self.tool.has_pan(ToolMaterial.iron) | self.received(Wallet.rusty_key) | (self.has(Fish.octopus) & self.building.has_building(Building.fish_pond)) | self.region.can_reach(Region.volcano_floor_10),
+            Geode.omni: self.count(2, *(self.mine.can_mine_in_the_mines_floor_81_120(), self.region.can_reach_all((Region.desert, Region.oasis, Region.sewer)), self.tool.has_pan(ToolMaterial.iron), (self.has(Fish.octopus) & self.building.has_building(Building.fish_pond)), (self.region.can_reach_all((Region.island_west, Region.island_north,)) & self.has(Consumable.treasure_totem)))),
             Gift.bouquet: self.relationship.has_hearts_with_any_bachelor(8) & self.money.can_spend_at(Region.pierre_store, 100),
             Gift.golden_pumpkin: self.season.has(Season.fall) | self.action.can_open_geode(Geode.artifact_trove),
             Gift.mermaid_pendant: self.region.can_reach(Region.tide_pools) & self.relationship.has_hearts_with_any_bachelor(10) & self.building.has_building(Building.kitchen) & self.has(Consumable.rain_totem),

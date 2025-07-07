@@ -5,9 +5,14 @@ from .base_logic import BaseLogicMixin, BaseLogic
 from ..content.vanilla.base import base_game
 from ..data.harvest import HarvestCropSource
 from ..stardew_rule import StardewRule, true_, True_, False_
+from ..strings.ap_names.ap_option_names import EatsanityOptionName
+from ..strings.currency_names import Currency
+from ..strings.food_names import Meal
+from ..strings.ingredient_names import Ingredient
+from ..strings.metal_names import Mineral
 from ..strings.performance_names import Performance
 from ..strings.quality_names import ForageQuality
-from ..strings.region_names import Region
+from ..strings.region_names import Region, LogicRegion
 from ..strings.skill_names import Skill, all_mod_skills, all_vanilla_skills
 from ..strings.tool_names import ToolMaterial, Tool, FishingRod
 from ..strings.wallet_item_names import Wallet
@@ -64,9 +69,56 @@ class SkillLogic(BaseLogic):
             return true_
 
         if self.content.features.skill_progression.is_progressive:
+            if level > 10:
+                if skill == Skill.fishing:
+                    return self.logic.received(f"{skill} Level", 10) & self.has_fishing_buffs_available(level - 10)
+                raise f"Cannot reach level {level} {skill}"
             return self.logic.received(f"{skill} Level", level)
 
         return self.logic.skill.can_earn_level(skill, level)
+
+    def has_fishing_buffs_available(self, buff_levels: int) -> StardewRule:
+
+        eat_rule = self.can_eat_fishing_buff(buff_levels)
+        rod_rule = self.logic.tool.has_fishing_rod(FishingRod.advanced_iridium)
+        enchant_rule = self.logic.region.can_reach(Region.volcano_floor_10) & self.logic.has(Mineral.prismatic_shard) & self.logic.has(
+            Currency.cinder_shard) & self.can_eat_fishing_buff(buff_levels - 1)
+        chef_rule = self.logic.region.can_reach(LogicRegion.desert_festival) & self.can_eat_fishing_buff(buff_levels - 3)
+
+        return eat_rule | (rod_rule & enchant_rule) | chef_rule
+
+    def can_eat_fishing_buff(self, buff_levels: int) -> StardewRule:
+        enzyme_rule = self.logic.true_
+        food_rule = self.logic.true_
+
+        if buff_levels <= 0:
+            return self.logic.true_
+        elif buff_levels >= 6:
+            return self.logic.false_
+
+        potential_foods = {
+            1: [Meal.maple_bar, Meal.chowder, Meal.trout_soup, Meal.shrimp_cocktail],
+            2: [Meal.escargot, Meal.fish_taco],
+            3: [Meal.dish_o_the_sea, Meal.fish_stew, Meal.lobster_bisque],
+            4: [Meal.seafoam_pudding],
+        }
+
+        foods_correct_level = []
+        foods_only_with_seasoning_level = []
+        for level in potential_foods:
+            if level >= buff_levels:
+                foods_correct_level.extend(potential_foods[level])
+            if level == buff_levels-1:
+                foods_only_with_seasoning_level.extend(potential_foods[level])
+
+        normal_food_rule = self.logic.or_(*[self.logic.has(food) for food in foods_correct_level], allow_empty=True)
+        qi_seasoning_food_rule = self.logic.has(Ingredient.qi_seasoning) &\
+                                 self.logic.or_(*[self.logic.cooking.can_cook(food) for food in foods_only_with_seasoning_level], allow_empty=True)
+        food_rule = normal_food_rule | qi_seasoning_food_rule
+
+        if EatsanityOptionName.lock_effects in self.options.eatsanity:
+            enzyme_rule = self.logic.received("Fishing Enzyme", buff_levels)
+        return food_rule & enzyme_rule
 
     def has_previous_level(self, skill: str, level: int) -> StardewRule:
         assert level > 0, "There is no level before level 0."

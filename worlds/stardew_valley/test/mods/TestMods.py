@@ -4,6 +4,7 @@ from ..bases import SVTestCase, SVTestBase, solo_multiworld
 from ..options.presets import allsanity_mods_7_x_x
 from ... import options
 from ...items import Group
+from ...mods.mod_data import invalid_mod_combinations
 from ...options.options import all_mods
 
 
@@ -24,18 +25,23 @@ class TestCanGenerateWithEachMod(WorldAssertMixin, ModAssertMixin, SVTestCase):
     mods = all_mods
 
     def test_given_single_mods_when_generate_then_basic_checks(self):
-        world_options = {
-            options.Mods: frozenset(self.mods),
-            options.ExcludeGingerIsland: options.ExcludeGingerIsland.option_false
-        }
-        with solo_multiworld(world_options) as (multi_world, _):
-            self.assert_basic_checks(multi_world)
-            self.assert_stray_mod_items(self.mods, multi_world)
+        for invalid_combination in invalid_mod_combinations:
+            for mod in invalid_combination:
+                mods = set(self.mods).difference(invalid_combination)
+                mods.add(mod)
+                with self.subTest(f"Can generate with mods: {mods}"):
+                    world_options = {
+                        options.Mods: frozenset(mods),
+                        options.ExcludeGingerIsland: options.ExcludeGingerIsland.option_false
+                    }
+                    with solo_multiworld(world_options) as (multi_world, _):
+                        self.assert_basic_checks(multi_world)
+                        self.assert_stray_mod_items(mods, multi_world)
 
 
 class TestBaseLocationDependencies(SVTestBase):
     options = {
-        options.Mods.internal_name: frozenset(options.Mods.valid_keys),
+        options.Mods.internal_name: frozenset(options.all_mods_except_invalid_combinations),
         options.ToolProgression.internal_name: options.ToolProgression.option_progressive,
         options.SeasonRandomization.internal_name: options.SeasonRandomization.option_randomized
     }
@@ -54,9 +60,10 @@ class TestBaseItemGeneration(SVTestBase):
         options.Booksanity.internal_name: options.Booksanity.option_all,
         options.Walnutsanity.internal_name: options.Walnutsanity.preset_all,
         options.Moviesanity.internal_name: options.Moviesanity.option_all_movies_and_all_loved_snacks,
+        options.Eatsanity.internal_name: options.Eatsanity.preset_all,
         options.Secretsanity.internal_name: options.Secretsanity.preset_all,
         options.IncludeEndgameLocations.internal_name: options.IncludeEndgameLocations.option_true,
-        options.Mods.internal_name: frozenset(options.Mods.valid_keys)
+        options.Mods.internal_name: frozenset(options.all_mods_except_invalid_combinations),
     }
 
     def test_all_progression_items_are_added_to_the_pool(self):
@@ -78,9 +85,10 @@ class TestNoGingerIslandModItemGeneration(SVTestBase):
         options.Booksanity.internal_name: options.Booksanity.option_all,
         options.Secretsanity.internal_name: options.Secretsanity.preset_all,
         options.Moviesanity.internal_name: options.Moviesanity.option_all_movies_and_all_loved_snacks,
+        options.Eatsanity.internal_name: options.Eatsanity.preset_all,
         options.ExcludeGingerIsland.internal_name: options.ExcludeGingerIsland.option_true,
         options.IncludeEndgameLocations.internal_name: options.IncludeEndgameLocations.option_true,
-        options.Mods.internal_name: frozenset(options.Mods.valid_keys)
+        options.Mods.internal_name: frozenset(options.all_mods_except_invalid_combinations),
     }
 
     def test_all_progression_items_except_island_are_added_to_the_pool(self):

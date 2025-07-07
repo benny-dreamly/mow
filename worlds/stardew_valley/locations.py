@@ -10,6 +10,7 @@ from .content.game_content import StardewContent
 from .content.vanilla.ginger_island import ginger_island_content_pack
 from .content.vanilla.qi_board import qi_board_content_pack
 from .data.game_item import ItemTag
+from .data.hats_data import Hats
 from .data.museum_data import all_museum_items
 from .mods.mod_data import ModNames
 from .options import ArcadeMachineLocations, SpecialOrderLocations, Museumsanity, \
@@ -571,20 +572,26 @@ def extend_secrets_locations(randomized_locations: List[LocationData], options: 
     if SecretsanityOptionName.secret_notes in options.secretsanity:
         locations.extend(locations_by_tag[LocationTags.SECRET_NOTE])
         for location_dupe in locations_by_tag[LocationTags.REPLACES_PREVIOUS_LOCATION]:
+            second_part_of_name = location_dupe.name.split(":")[-1]
             for location in randomized_locations:
-                if location.name in location_dupe.name:
+                second_part_of_dupe_name = location.name.split(":")[-1]
+                if second_part_of_name == second_part_of_dupe_name:
                     randomized_locations.remove(location)
     filtered_locations = filter_disabled_locations(options, content, locations)
     randomized_locations.extend(filtered_locations)
 
 
-def extend_hats_locations(randomized_locations: List[LocationData], options: StardewValleyOptions, content: StardewContent):
+def extend_hats_locations(randomized_locations: List[LocationData], content: StardewContent):
     hatsanity = content.features.hatsanity
     if not hatsanity.is_enabled:
         return
 
-    for hat_name, hat in content.hats.items():
+    museum_hats = [Hats.blue_bonnet, Hats.cowboy]
+
+    for hat in content.hats.values():
         if not hatsanity.is_included(hat):
+            continue
+        if not content.features.museumsanity.is_enabled and hat in museum_hats:
             continue
 
         randomized_locations.append(location_table[hat.to_location_name()])
@@ -640,7 +647,8 @@ def extend_endgame_locations(randomized_locations: List[LocationData], options: 
     endgame_locations = []
     endgame_locations.extend(locations_by_tag[LocationTags.ENDGAME_LOCATIONS])
 
-    endgame_locations = [location for location in endgame_locations if LocationTags.REQUIRES_FRIENDSANITY_MARRIAGE not in location.tags or has_friendsanity_marriage]
+    endgame_locations = [location for location in endgame_locations if
+                         LocationTags.REQUIRES_FRIENDSANITY_MARRIAGE not in location.tags or has_friendsanity_marriage]
     endgame_locations = [location for location in endgame_locations if LocationTags.REQUIRES_FRIENDSANITY not in location.tags or has_friendsanity]
     endgame_locations = filter_disabled_locations(options, content, endgame_locations)
     randomized_locations.extend(endgame_locations)
@@ -698,7 +706,7 @@ def create_locations(location_collector: StardewLocationCollector,
     extend_walnutsanity_locations(randomized_locations, options)
     extend_movies_locations(randomized_locations, options, content)
     extend_secrets_locations(randomized_locations, options, content)
-    extend_hats_locations(randomized_locations, options, content)
+    extend_hats_locations(randomized_locations, content)
     extend_eatsanity_locations(randomized_locations, options, content)
     extend_endgame_locations(randomized_locations, options, content)
 
@@ -716,9 +724,9 @@ def filter_deprecated_locations(locations: Iterable[LocationData]) -> Iterable[L
 def filter_animals_quest(options: StardewValleyOptions, locations: Iterable[LocationData]) -> Iterable[LocationData]:
     # On Meadowlands, "Feeding Animals" replaces "Raising Animals"
     if options.farm_type == FarmType.option_meadowlands:
-        return (location for location in locations if location.name != Quest.raising_animals)
+        return (location for location in locations if location.name != f"Quest: {Quest.raising_animals}")
     else:
-        return (location for location in locations if location.name != Quest.feeding_animals)
+        return (location for location in locations if location.name != f"Quest: {Quest.feeding_animals}")
 
 
 def filter_farm_exclusives(options: StardewValleyOptions, locations: Iterable[LocationData]) -> Iterable[LocationData]:

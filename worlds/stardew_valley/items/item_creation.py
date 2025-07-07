@@ -266,8 +266,7 @@ def create_special_quest_rewards(item_factory: StardewItemFactory, options: Star
     # items.append(item_factory("Adventurer's Guild")) # Now unlocked always!
     items.append(item_factory(Wallet.club_card))
     items.append(item_factory(Wallet.magnifying_glass))
-    if options.include_endgame_locations == IncludeEndgameLocations.option_true:
-        items.append(item_factory(Wallet.magic_ink))
+    items.append(item_factory(Wallet.magic_ink))
     if ModNames.sve in content.registered_packs:
         items.append(item_factory(Wallet.bears_knowledge))
     else:
@@ -543,6 +542,8 @@ def create_secrets_items(item_factory: StardewItemFactory, options: StardewValle
     #     items.extend(item_factory(item) for item in items_by_group[Group.DIFFICULT_SECRET])
     if SecretsanityOptionName.secret_notes in options.secretsanity:
         items.extend(item_factory(item) for item in items_by_group[Group.SECRET_NOTES_SECRET])
+        if options.quest_locations.has_no_story_quests():
+            items.append(item_factory(Wallet.iridium_snake_milk))
 
 
 def create_eatsanity_enzyme_items(item_factory: StardewItemFactory, options: StardewValleyOptions, items: List[Item]):

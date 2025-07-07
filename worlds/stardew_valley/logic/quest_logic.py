@@ -2,6 +2,7 @@ from typing import Dict
 
 from .base_logic import BaseLogicMixin, BaseLogic
 from ..stardew_rule import StardewRule, Has, True_
+from ..strings.ap_names.ap_option_names import SecretsanityOptionName
 from ..strings.ap_names.community_upgrade_names import CommunityUpgrade
 from ..strings.artisan_good_names import ArtisanGood
 from ..strings.building_names import Building
@@ -18,7 +19,7 @@ from ..strings.quest_names import Quest
 from ..strings.region_names import Region
 from ..strings.season_names import Season
 from ..strings.special_item_names import SpecialItem
-from ..strings.tool_names import Tool
+from ..strings.tool_names import Tool, FishingRod
 from ..strings.villager_names import NPC
 from ..strings.wallet_item_names import Wallet
 
@@ -66,7 +67,7 @@ class QuestLogic(BaseLogic):
             Quest.carving_pumpkins: self.logic.season.has(Season.fall) & self.logic.has(Vegetable.pumpkin) & self.logic.relationship.can_meet(NPC.caroline),
             Quest.a_winter_mystery: self.logic.season.has(Season.winter),
             Quest.strange_note: self.logic.has(Forageable.secret_note) & self.logic.has(ArtisanGood.maple_syrup),
-            Quest.cryptic_note: self.logic.has(Forageable.secret_note),
+            Quest.cryptic_note: self.logic.has(Forageable.secret_note) & self.logic.region.can_reach(Region.skull_cavern_100),
             Quest.fresh_fruit: self.logic.season.has(Season.spring) & self.logic.has(Fruit.apricot) & self.logic.relationship.can_meet(NPC.emily),
             Quest.aquatic_research: self.logic.season.has(Season.summer) & self.logic.has(Fish.pufferfish) & self.logic.relationship.can_meet(NPC.demetrius),
             Quest.a_soldiers_star: (self.logic.season.has(Season.summer) & self.logic.time.has_year_two & self.logic.has(Fruit.starfruit) &
@@ -132,5 +133,30 @@ class QuestLogic(BaseLogic):
 
     def can_complete_help_wanteds(self, number: int) -> StardewRule:
         number_per_month = 7
-        number_monts = number // number_per_month
-        return self.logic.time.has_lived_months(number_monts)
+        number_months = number // number_per_month
+        if number <= 7:
+            return self.logic.time.has_lived_months(number_months)
+        return self.logic.time.has_lived_months(number_months) &\
+               self.can_do_item_delivery_quest() & self.can_do_gathering_quest() &\
+               self.can_do_fishing_quest() & self.can_do_slaying_quest()
+
+    def can_do_item_delivery_quest(self) -> StardewRule:
+        return self.logic.region.can_reach(Region.town)
+
+    def can_do_gathering_quest(self) -> StardewRule:
+        return self.logic.region.can_reach_all(*(Region.town, Region.forest)) & \
+               self.logic.region.can_reach_any(*(Region.mines, Region.quarry, Region.skull_cavern_25)) & \
+               self.logic.tool.has_tool(Tool.axe) & \
+               self.logic.tool.has_tool(Tool.pickaxe)
+
+    def can_do_fishing_quest(self) -> StardewRule:
+        return self.logic.region.can_reach_all(*(Region.town, Region.beach)) & \
+               self.logic.tool.has_fishing_rod(FishingRod.bamboo)
+
+    def can_do_slaying_quest(self) -> StardewRule:
+        return self.logic.region.can_reach_all(*(Region.town, Region.mines_floor_10))
+
+    def can_drink_snake_milk(self) -> StardewRule:
+        if self.options.quest_locations.has_story_quests() or SecretsanityOptionName.secret_notes in self.options.secretsanity:
+            return self.logic.received(Wallet.iridium_snake_milk)
+        return self.logic.quest.can_complete_quest(Quest.cryptic_note) & self.logic.region.can_reach(Region.skull_cavern_100)
