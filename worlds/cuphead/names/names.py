@@ -92,14 +92,14 @@ class LocationNames:
     level_dlc_chesscastle_run = level_dlc_chesscastle + " Gauntlet"
 
     level_shop = "Porkrind's Emporium"
-    level_shop1 = level_shop + _isle1_
-    level_shop2 = level_shop + _isle2_
-    level_shop3 = level_shop + _isle3_
-    level_base_shops = (level_shop1, level_shop2, level_shop3)
-    level_dlc_shop4 = level_shop + _isle4_
-    level_dlc_shop = level_dlc_shop4
-    level_dlc_shops = (level_dlc_shop4,)
-    level_shops = level_base_shops + level_dlc_shops
+    #level_shop1 = level_shop + _isle1_
+    #level_shop2 = level_shop + _isle2_
+    #level_shop3 = level_shop + _isle3_
+    #level_base_shops = (level_shop1, level_shop2, level_shop3)
+    #level_dlc_shop4 = level_shop + _isle4_
+    #level_dlc_shop = level_dlc_shop4
+    #level_dlc_shops = (level_dlc_shop4,)
+    #level_shops = level_base_shops + level_dlc_shops
 
     level_tutorial = "Tutorial"
     level_plane_tutorial = "Plane Tutorial"
@@ -115,6 +115,17 @@ class LocationNames:
     world_inkwell_3 = world_inkwell + _num3_
     world_inkwell_hell = "Inkwell Hell"
     world_dlc_inkwell_4 = world_inkwell + _num4_
+
+    # Shop Set Defs
+    shop_set = "Shop Set"
+    shop_set1 = shop_set + " 1"
+    shop_set2 = shop_set + " 2"
+    shop_set3 = shop_set + " 3"
+    base_shop_sets = (shop_set1, shop_set2, shop_set3)
+    shop_set4 = shop_set + " 4"
+    dlc_shop_set = shop_set4
+    dlc_shop_sets = (shop_set4,)
+    shop_sets = base_shop_sets + dlc_shop_sets
 
     # Location Defs
     loc_level_tutorial = level_tutorial + " Complete"
@@ -278,23 +289,41 @@ class LocationNames:
     loc_level_dlc_boss_plane_cowboy_event_dlc_chaliced = _loc_event_ + loc_level_dlc_boss_plane_cowboy_dlc_chaliced
 
     loc_level_dicepalace_boss1 = level_dicepalace_boss1 + " Complete"
+    loc_level_dicepalace_boss1_dlc_chaliced = level_dicepalace_boss1 + " Chalice Complete"
     loc_level_dicepalace_boss2 = level_dicepalace_boss2 + " Complete"
+    loc_level_dicepalace_boss2_dlc_chaliced = level_dicepalace_boss2 + " Chalice Complete"
     loc_level_dicepalace_boss3 = level_dicepalace_boss3 + " Complete"
+    loc_level_dicepalace_boss3_dlc_chaliced = level_dicepalace_boss3 + " Chalice Complete"
     loc_level_dicepalace_boss4 = level_dicepalace_boss4 + " Complete"
+    loc_level_dicepalace_boss4_dlc_chaliced = level_dicepalace_boss4 + " Chalice Complete"
     loc_level_dicepalace_boss5 = level_dicepalace_boss5 + " Complete"
+    loc_level_dicepalace_boss5_dlc_chaliced = level_dicepalace_boss5 + " Chalice Complete"
     loc_level_dicepalace_boss6 = level_dicepalace_boss6 + " Complete"
+    loc_level_dicepalace_boss6_dlc_chaliced = level_dicepalace_boss6 + " Chalice Complete"
     loc_level_dicepalace_boss7 = level_dicepalace_boss7 + " Complete"
+    loc_level_dicepalace_boss7_dlc_chaliced = level_dicepalace_boss7 + " Chalice Complete"
     loc_level_dicepalace_boss8 = level_dicepalace_boss8 + " Complete"
+    loc_level_dicepalace_boss8_dlc_chaliced = level_dicepalace_boss8 + " Chalice Complete"
     loc_level_dicepalace_boss9 = level_dicepalace_boss9 + " Complete"
+    loc_level_dicepalace_boss9_dlc_chaliced = level_dicepalace_boss9 + " Chalice Complete"
     loc_level_dicepalace_boss_booze = level_dicepalace_boss_booze + " Complete"
+    loc_level_dicepalace_boss_booze_dlc_chaliced = level_dicepalace_boss_booze + " Chalice Complete"
     loc_level_dicepalace_boss_chips = level_dicepalace_boss_chips + " Complete"
+    loc_level_dicepalace_boss_chips_dlc_chaliced = level_dicepalace_boss_chips + " Chalice Complete"
     loc_level_dicepalace_boss_cigar = level_dicepalace_boss_cigar + " Complete"
+    loc_level_dicepalace_boss_cigar_dlc_chaliced = level_dicepalace_boss_cigar + " Chalice Complete"
     loc_level_dicepalace_boss_domino = level_dicepalace_boss_domino + " Complete"
+    loc_level_dicepalace_boss_domino_dlc_chaliced = level_dicepalace_boss_domino + " Chalice Complete"
     loc_level_dicepalace_boss_rabbit = level_dicepalace_boss_rabbit + " Complete"
+    loc_level_dicepalace_boss_rabbit_dlc_chaliced = level_dicepalace_boss_rabbit + " Chalice Complete"
     loc_level_dicepalace_boss_plane_horse = level_dicepalace_boss_plane_horse + " Complete"
+    loc_level_dicepalace_boss_plane_horse_dlc_chaliced = level_dicepalace_boss_plane_horse + " Chalice Complete"
     loc_level_dicepalace_boss_roulette = level_dicepalace_boss_roulette + " Complete"
+    loc_level_dicepalace_boss_roulette_dlc_chaliced = level_dicepalace_boss_roulette + " Chalice Complete"
     loc_level_dicepalace_boss_eightball = level_dicepalace_boss_eightball + " Complete"
+    loc_level_dicepalace_boss_eightball_dlc_chaliced = level_dicepalace_boss_eightball + " Chalice Complete"
     loc_level_dicepalace_boss_plane_memory = level_dicepalace_boss_plane_memory + " Complete"
+    loc_level_dicepalace_boss_plane_memory_dlc_chaliced = level_dicepalace_boss_plane_memory + " Chalice Complete"
 
     loc_level_rungun_forest = level_rungun_forest + " Complete"
     loc_level_rungun_forest_agrade = level_rungun_forest + " Top Grade"
@@ -372,12 +401,18 @@ class LocationNames:
     loc_level_mausoleum_ii = level_mausoleum_ii
     loc_level_mausoleum_iii = level_mausoleum_iii
 
+    loc_level_dlc_chesscastle_pawn = level_dlc_chesscastle_pawn + " Complete"
+    loc_level_dlc_chesscastle_pawn_dlc_chaliced = level_dlc_chesscastle_pawn + " Chalice Complete"
+    loc_level_dlc_chesscastle_knight = level_dlc_chesscastle_knight + " Complete"
+    loc_level_dlc_chesscastle_knight_dlc_chaliced = level_dlc_chesscastle_knight + " Chalice Complete"
+    loc_level_dlc_chesscastle_bishop = level_dlc_chesscastle_bishop + " Complete"
+    loc_level_dlc_chesscastle_bishop_dlc_chaliced = level_dlc_chesscastle_bishop + " Chalice Complete"
+    loc_level_dlc_chesscastle_rook = level_dlc_chesscastle_rook + " Complete"
+    loc_level_dlc_chesscastle_rook_dlc_chaliced = level_dlc_chesscastle_rook + " Chalice Complete"
+    loc_level_dlc_chesscastle_queen = level_dlc_chesscastle_queen + " Complete"
+    loc_level_dlc_chesscastle_queen_dlc_chaliced = level_dlc_chesscastle_queen + " Chalice Complete"
     loc_level_dlc_chesscastle_run = level_dlc_chesscastle_run + " Complete"
-    loc_level_dlc_chesscastle_pawn = level_dlc_chesscastle_pawn + " Reward"
-    loc_level_dlc_chesscastle_knight = level_dlc_chesscastle_knight + " Reward"
-    loc_level_dlc_chesscastle_bishop = level_dlc_chesscastle_bishop + " Reward"
-    loc_level_dlc_chesscastle_rook = level_dlc_chesscastle_rook + " Reward"
-    loc_level_dlc_chesscastle_queen = level_dlc_chesscastle_queen + " Reward"
+    loc_level_dlc_chesscastle_run_dlc_chaliced = level_dlc_chesscastle_run + " Chalice Complete"
 
     loc_level_dlc_graveyard = level_dlc_graveyard + " Complete"
 
@@ -425,7 +460,7 @@ class LocationNames:
 
     loc_npc_mac = "Mac"
     loc_npc_canteen = "Canteen Hughes"
-    loc_quest_4parries = "Buster Quest"
+    loc_quest_buster = "Buster Quest"
     loc_quest_ginger = "Ginger Quest"
     loc_quest_4mel = "Barbershop Quartet Quest"
     loc_quest_lucien = "Lucien Quest"
@@ -477,7 +512,7 @@ class ItemNames:
     # Junk
     item_level_generic = "Present"
     item_level_extrahealth = "+1 Health"
-    item_level_superrecharge = "Super Recharge"
+    item_level_supercharge = "Super Charge"
     item_level_fastfire = "Fast Fire"
     item_level_4 = "Item Id 4"
 

@@ -1,9 +1,9 @@
 from __future__ import annotations
 import typing
-from typing import Callable, Iterable
+from collections.abc import Callable, Iterable
 from BaseClasses import CollectionState
 if typing.TYPE_CHECKING:
-    from . import CupheadWorld
+    from .. import CupheadWorld
 
 Rule = Callable[[CollectionState], bool]
 RegionRule = Callable[[CollectionState, int], bool]
@@ -46,6 +46,8 @@ def rule_can_reach_any_region(world: "CupheadWorld", regions: Iterable[str]) -> 
 def region_rule_to_rule(rrule: RegionRule, player: int) -> Rule:
     return lambda state, p=player: rrule(state, p)
 
+def region_rule_or(a: RegionRule, b: RegionRule) -> RegionRule:
+    return lambda state, player: a(state, player) or b(state, player)
 def region_rule_and(a: RegionRule, b: RegionRule) -> RegionRule:
     return lambda state, player: a(state, player) and b(state, player)
 def region_rule_none() -> RegionRule:

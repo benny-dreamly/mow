@@ -27,6 +27,10 @@ class OuterWildsWebWorld(WebWorld):
 
 
 class OuterWildsWorld(World):
+    """
+    Outer Wilds is a 2019 action-adventure game about exploring a planetary system stuck in a very short time loop that resets after the sun goes supernova and destroys the system. 
+    Through repeated attempts, they investigate the alien ruins of the Nomai to discover their history and the cause of the time loop.
+    """
     game = "Outer Wilds"
     author: str = "Ixrec"
     web = OuterWildsWebWorld()

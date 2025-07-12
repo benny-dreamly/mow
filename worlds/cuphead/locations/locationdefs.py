@@ -1,33 +1,6 @@
 from __future__ import annotations
-from typing import NamedTuple, Optional
-from BaseClasses import Location, Region, LocationProgressType
-from .names import LocationNames
-from .wsettings import WorldSettings, GameMode, GradeCheckMode, ChessCastleMode
-
-class CupheadLocation(Location):
-    game: str = "Cuphead"
-    def __init__(
-            self,
-            player: int,
-            name: str = '',
-            id: Optional[int] = None,
-            parent: Optional[Region] = None,
-            event: bool = False,
-            progress_type: LocationProgressType = LocationProgressType.DEFAULT,
-            show_in_spoiler: bool = True
-        ):
-        super().__init__(player, name, id, parent)
-        self.event = event
-        self.progress_type = progress_type
-        self.show_in_spoiler = show_in_spoiler
-
-class LocationData(NamedTuple):
-    id: Optional[int]
-    progress_type: LocationProgressType = LocationProgressType.DEFAULT
-    event: bool = False
-
-    def with_progress_type(self, progress_type: LocationProgressType) -> LocationData:
-        return LocationData(self.id, progress_type, self.event)
+from .locationbase import LocationData
+from ..names import LocationNames
 
 base_id = 12905168
 base_dlc_id = 12909264
@@ -36,7 +9,7 @@ def id(i: int): return base_id+i
 def dlc_id(i: int): return base_dlc_id+i
 
 # Locations
-# Next ids: 128, 62
+# Next ids: 128, 77
 # Level Locations
 location_level_tutorial: dict[str, LocationData] = {
     LocationNames.loc_level_tutorial: LocationData(id(0)),
@@ -229,6 +202,17 @@ location_level_dicepalace: dict[str, LocationData] = {
     LocationNames.loc_level_dicepalace_boss8: LocationData(id(48)),
     LocationNames.loc_level_dicepalace_boss9: LocationData(id(49)),
 }
+location_level_dicepalace_dlc_chaliced: dict[str, LocationData] = {
+    LocationNames.loc_level_dicepalace_boss1_dlc_chaliced: LocationData(dlc_id(39)),
+    LocationNames.loc_level_dicepalace_boss2_dlc_chaliced: LocationData(dlc_id(40)),
+    LocationNames.loc_level_dicepalace_boss3_dlc_chaliced: LocationData(dlc_id(41)),
+    LocationNames.loc_level_dicepalace_boss4_dlc_chaliced: LocationData(dlc_id(42)),
+    LocationNames.loc_level_dicepalace_boss5_dlc_chaliced: LocationData(dlc_id(43)),
+    LocationNames.loc_level_dicepalace_boss6_dlc_chaliced: LocationData(dlc_id(44)),
+    LocationNames.loc_level_dicepalace_boss7_dlc_chaliced: LocationData(dlc_id(45)),
+    LocationNames.loc_level_dicepalace_boss8_dlc_chaliced: LocationData(dlc_id(46)),
+    LocationNames.loc_level_dicepalace_boss9_dlc_chaliced: LocationData(dlc_id(47)),
+}
 
 location_level_rungun: dict[str, LocationData] = {
     LocationNames.loc_level_rungun_forest: LocationData(id(50)),
@@ -290,12 +274,12 @@ location_level_rungun_pacifist: dict[str, LocationData] = {
     LocationNames.loc_level_rungun_mountain_pacifist: LocationData(id(92)),
 }
 location_level_rungun_dlc_chaliced: dict[str, LocationData] = {
-    LocationNames.loc_level_rungun_forest_dlc_chaliced: LocationData(dlc_id(39)),
-    LocationNames.loc_level_rungun_tree_dlc_chaliced: LocationData(dlc_id(40)),
-    LocationNames.loc_level_rungun_circus_dlc_chaliced: LocationData(dlc_id(41)),
-    LocationNames.loc_level_rungun_funhouse_dlc_chaliced: LocationData(dlc_id(42)),
-    LocationNames.loc_level_rungun_harbour_dlc_chaliced: LocationData(dlc_id(43)),
-    LocationNames.loc_level_rungun_mountain_dlc_chaliced: LocationData(dlc_id(44)),
+    LocationNames.loc_level_rungun_forest_dlc_chaliced: LocationData(dlc_id(48)),
+    LocationNames.loc_level_rungun_tree_dlc_chaliced: LocationData(dlc_id(49)),
+    LocationNames.loc_level_rungun_circus_dlc_chaliced: LocationData(dlc_id(50)),
+    LocationNames.loc_level_rungun_funhouse_dlc_chaliced: LocationData(dlc_id(51)),
+    LocationNames.loc_level_rungun_harbour_dlc_chaliced: LocationData(dlc_id(52)),
+    LocationNames.loc_level_rungun_mountain_dlc_chaliced: LocationData(dlc_id(53)),
 }
 location_level_rungun_event_agrade: dict[str, LocationData] = {
     LocationNames.loc_level_rungun_forest_event_agrade: LocationData(None),
@@ -321,16 +305,24 @@ location_level_mausoleum: dict[str, LocationData] = {
 }
 
 location_level_dlc_chesscastle: dict[str, LocationData] = {
-    LocationNames.loc_level_dlc_chesscastle_run: LocationData(dlc_id(45)),
-    LocationNames.loc_level_dlc_chesscastle_pawn: LocationData(dlc_id(46)),
-    LocationNames.loc_level_dlc_chesscastle_knight: LocationData(dlc_id(47)),
-    LocationNames.loc_level_dlc_chesscastle_bishop: LocationData(dlc_id(48)),
-    LocationNames.loc_level_dlc_chesscastle_rook: LocationData(dlc_id(49)),
-    LocationNames.loc_level_dlc_chesscastle_queen: LocationData(dlc_id(50)),
+    LocationNames.loc_level_dlc_chesscastle_pawn: LocationData(dlc_id(54)),
+    LocationNames.loc_level_dlc_chesscastle_knight: LocationData(dlc_id(55)),
+    LocationNames.loc_level_dlc_chesscastle_bishop: LocationData(dlc_id(56)),
+    LocationNames.loc_level_dlc_chesscastle_rook: LocationData(dlc_id(57)),
+    LocationNames.loc_level_dlc_chesscastle_queen: LocationData(dlc_id(58)),
+    LocationNames.loc_level_dlc_chesscastle_run: LocationData(dlc_id(59)),
+}
+location_level_dlc_chesscastle_dlc_chaliced: dict[str, LocationData] = {
+    LocationNames.loc_level_dlc_chesscastle_pawn_dlc_chaliced: LocationData(dlc_id(60)),
+    LocationNames.loc_level_dlc_chesscastle_knight_dlc_chaliced: LocationData(dlc_id(61)),
+    LocationNames.loc_level_dlc_chesscastle_bishop_dlc_chaliced: LocationData(dlc_id(62)),
+    LocationNames.loc_level_dlc_chesscastle_rook_dlc_chaliced: LocationData(dlc_id(63)),
+    LocationNames.loc_level_dlc_chesscastle_queen_dlc_chaliced: LocationData(dlc_id(64)),
+    LocationNames.loc_level_dlc_chesscastle_run_dlc_chaliced: LocationData(dlc_id(65)),
 }
 
 location_level_dlc_special: dict[str, LocationData] = {
-    #LocationNames.loc_level_dlc_graveyard: LocationData(dlc_id(51)),
+    #LocationNames.loc_level_dlc_graveyard: LocationData(dlc_id(66)),
 }
 
 # Shop Locations
@@ -348,11 +340,11 @@ location_shop: dict[str, LocationData] = {
     LocationNames.loc_shop_charm6: LocationData(id(111)),
 }
 location_shop_dlc: dict[str, LocationData] = {
-    LocationNames.loc_shop_dlc_weapon6: LocationData(dlc_id(52)),
-    LocationNames.loc_shop_dlc_weapon7: LocationData(dlc_id(53)),
-    LocationNames.loc_shop_dlc_weapon8: LocationData(dlc_id(54)),
-    LocationNames.loc_shop_dlc_charm7: LocationData(dlc_id(55)),
-    LocationNames.loc_shop_dlc_charm8: LocationData(dlc_id(56)),
+    LocationNames.loc_shop_dlc_weapon6: LocationData(dlc_id(67)),
+    LocationNames.loc_shop_dlc_weapon7: LocationData(dlc_id(68)),
+    LocationNames.loc_shop_dlc_weapon8: LocationData(dlc_id(69)),
+    LocationNames.loc_shop_dlc_charm7: LocationData(dlc_id(70)),
+    LocationNames.loc_shop_dlc_charm8: LocationData(dlc_id(71)),
 }
 
 # World Locations
@@ -372,7 +364,7 @@ location_world_event: dict[str, LocationData] = {
     LocationNames.loc_event_isle1_secret_prereq5: LocationData(None),
 }
 location_world_quest: dict[str, LocationData] = {
-    LocationNames.loc_quest_4parries: LocationData(id(118)),
+    LocationNames.loc_quest_buster: LocationData(id(118)),
     LocationNames.loc_quest_ginger: LocationData(id(119)),
     LocationNames.loc_quest_4mel: LocationData(id(120)),
     LocationNames.loc_quest_lucien: LocationData(id(121)),
@@ -386,14 +378,14 @@ location_level_boss_secret: dict[str, LocationData] = {
     LocationNames.loc_level_boss_sallystageplay_secret: LocationData(id(127)),
 }
 location_dlc_world: dict[str, LocationData] = {
-    LocationNames.loc_dlc_npc_newscat: LocationData(dlc_id(57)),
-    LocationNames.loc_dlc_coin_isle4_secret: LocationData(dlc_id(58)),
+    LocationNames.loc_dlc_npc_newscat: LocationData(dlc_id(72)),
+    LocationNames.loc_dlc_coin_isle4_secret: LocationData(dlc_id(73)),
 }
 location_dlc_world_event: dict[str, LocationData] = {
     LocationNames.loc_event_dlc_boatarrival: LocationData(None),
 }
 location_dlc_world_quest: dict[str, LocationData] = {
-    LocationNames.loc_dlc_quest_cactusgirl: LocationData(dlc_id(59)),
+    LocationNames.loc_dlc_quest_cactusgirl: LocationData(dlc_id(74)),
 }
 
 # Special Locations
@@ -405,10 +397,10 @@ location_special: dict[str, LocationData] = {
     #LocationNames.loc_event_music: LocationData(None),
 }
 location_dlc_special: dict[str, LocationData] = {
-    LocationNames.loc_dlc_cookie: LocationData(dlc_id(60)),
+    LocationNames.loc_dlc_cookie: LocationData(dlc_id(75)),
     LocationNames.loc_event_mausoleum: LocationData(None),
     LocationNames.loc_event_dlc_cookie: LocationData(None),
-    #LocationNames.loc_dlc_curse_complete: LocationData(dlc_id(61)),
+    #LocationNames.loc_dlc_curse_complete: LocationData(dlc_id(76)),
 }
 
 # Goal Locations
@@ -499,138 +491,13 @@ locations_all: dict[str, LocationData] = {
     **location_level_rungun_dlc_chaliced,
     **location_level_boss_final_dlc_chaliced, # Final
     **location_level_dlc_boss_final_dlc_chaliced, # Final
+    **location_level_dicepalace_dlc_chaliced,
+    **location_level_dlc_chesscastle_dlc_chaliced,
     **locations_dlc_event_boss_chaliced,
     **location_dlc_world_quest,
     **location_dlc_special,
     **location_dlc_goal,
     **location_level_dicepalace,
 }
-
-def add_location(locations_ref: dict[str,LocationData], loc_name: str):
-    locations_ref[loc_name] = locations_all[loc_name]
-
-def exclude_location(locations_ref: dict[str,LocationData], loc_name: str):
-    locations_ref[loc_name] = locations_ref[loc_name].with_progress_type(LocationProgressType.EXCLUDED)
-
-def setup_grade_check_locations(locations_ref: dict[str,LocationData], settings: WorldSettings):
-    boss_grade_checks = settings.boss_grade_checks
-    rungun_grade_checks = settings.rungun_grade_checks
-    if boss_grade_checks>0:
-        locations_ref.update(location_level_boss_topgrade)
-        if settings.mode != GameMode.BEAT_DEVIL:
-            locations_ref.update(location_level_boss_final_topgrade)
-    if rungun_grade_checks>0:
-        if rungun_grade_checks>=1 and rungun_grade_checks<=3:
-            locations_ref.update(location_level_rungun_agrade)
-        elif rungun_grade_checks==GradeCheckMode.PACIFIST:
-            locations_ref.update(location_level_rungun_pacifist)
-    if settings.boss_secret_checks:
-        locations_ref.update(location_level_boss_secret)
-
-def setup_quest_locations(locations_ref: dict[str,LocationData], settings: WorldSettings):
-    def _add_location(name: str):
-        add_location(locations_ref, name)
-    if settings.fourparries_quest:
-        _add_location(LocationNames.loc_quest_4parries)
-    if settings.ginger_quest:
-        _add_location(LocationNames.loc_quest_ginger)
-        _add_location(LocationNames.loc_event_isle2_shortcut)
-    if settings.fourmel_quest:
-        _add_location(LocationNames.loc_quest_4mel)
-        _add_location(LocationNames.loc_event_quest_4mel_4th)
-    if settings.lucien_quest:
-        _add_location(LocationNames.loc_quest_lucien)
-    if settings.music_quest:
-        _add_location(LocationNames.loc_quest_music)
-        _add_location(LocationNames.loc_event_quest_ludwig)
-        _add_location(LocationNames.loc_event_quest_wolfgang)
-    if settings.silverworth_quest:
-        locations_ref.update(locations_event_agrade)
-        if settings.mode == GameMode.BEAT_DEVIL:
-            locations_ref.update(location_level_boss_final_event_agrade)
-        _add_location(LocationNames.loc_quest_silverworth)
-    if settings.pacifist_quest:
-        locations_ref.update(location_level_rungun_event_pacifist)
-        _add_location(LocationNames.loc_quest_pacifist)
-
-def setup_boss_final_locations(
-        locations_ref: dict[str,LocationData],
-        settings: WorldSettings,
-        base_final: dict[str,LocationData],
-        dlc_final: dict[str,LocationData],
-    ):
-    if settings.mode != GameMode.BEAT_DEVIL:
-        locations_ref.update(base_final)
-    if settings.use_dlc and settings.mode != GameMode.DLC_BEAT_SALTBAKER:
-        locations_ref.update(dlc_final)
-
-def setup_dlc_chalice_locations(locations_ref: dict[str,LocationData], settings: WorldSettings):
-    locations_ref.update(location_level_dlc_tutorial)
-    add_location(locations_ref, LocationNames.loc_dlc_cookie)
-    if settings.dlc_boss_chalice_checks:
-        locations_ref.update(locations_dlc_boss_chaliced)
-        if settings.mode != GameMode.DLC_BEAT_SALTBAKER:
-            locations_ref.update(location_level_boss_final_dlc_chaliced)
-        if settings.mode != GameMode.DLC_BEAT_SALTBAKER:
-            locations_ref.update(location_level_dlc_boss_final_dlc_chaliced)
-    if settings.dlc_rungun_chalice_checks:
-        locations_ref.update(location_level_rungun_dlc_chaliced)
-    if settings.dlc_cactusgirl_quest:
-        locations_ref.update(locations_dlc_event_boss_chaliced)
-        setup_boss_final_locations(
-            locations_ref,
-            settings,
-            location_level_boss_final_event_dlc_chaliced,
-            location_level_dlc_boss_final_event_dlc_chaliced,
-        )
-        add_location(locations_ref, LocationNames.loc_dlc_quest_cactusgirl)
-
-def setup_dlc_locations(locations_ref: dict[str,LocationData], settings: WorldSettings):
-    locations_ref.update(locations_dlc)
-    if settings.boss_grade_checks>0:
-        locations_ref.update(location_level_dlc_boss_topgrade)
-        if settings.mode != GameMode.DLC_BEAT_SALTBAKER:
-            locations_ref.update(location_level_dlc_boss_final_topgrade)
-    if settings.dlc_requires_mausoleum:
-        add_location(locations_ref, LocationNames.loc_event_mausoleum)
-    if settings.dlc_chalice > 0:
-        setup_dlc_chalice_locations(locations_ref, settings)
-    if settings.dlc_kingsleap != ChessCastleMode.INCLUDE_ALL:
-        for loc in location_level_dlc_chesscastle.keys():
-            if (
-                (
-                    settings.dlc_kingsleap == ChessCastleMode.EXCLUDE_GAUNTLET and
-                    loc == LocationNames.level_dlc_chesscastle_run
-                ) or (
-                    settings.dlc_kingsleap == ChessCastleMode.GAUNTLET_ONLY and
-                    loc != LocationNames.level_dlc_chesscastle_run
-                ) or settings.dlc_kingsleap == ChessCastleMode.EXCLUDE
-            ):
-                exclude_location(locations_ref, loc)
-
-def setup_locations(settings: WorldSettings):
-    use_dlc = settings.use_dlc
-    locations: dict[str,LocationData] = {**locations_base}
-
-    setup_grade_check_locations(locations, settings)
-
-    setup_quest_locations(locations, settings)
-
-    if use_dlc:
-        setup_dlc_locations(locations, settings)
-
-    if settings.is_goal_used(LocationNames.loc_event_goal_devil):
-        locations.update(location_goal)
-    if use_dlc and settings.is_goal_used(LocationNames.loc_event_dlc_goal_saltbaker):
-        locations.update(location_dlc_goal)
-
-    setup_boss_final_locations(
-        locations,
-        settings,
-        location_level_boss_final,
-        location_level_dlc_boss_final
-    )
-
-    return locations
 
 name_to_id = {name: data.id for name, data in locations_all.items() if data.id}

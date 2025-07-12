@@ -17,7 +17,8 @@
                 "exists": true
             },
             {
-                "exists": true
+                "exists": true,
+                "Requirements": ["Wing Cap"]
             },
             {
                 "exists": true,
