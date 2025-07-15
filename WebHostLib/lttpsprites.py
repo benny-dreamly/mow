@@ -15,8 +15,9 @@ class NullTask:
     def queue_event(self, fn):
         fn()
 
-    def close_window(self):
-        pass
+    # Target directories
+    input_dir = user_path("data", "sprites", "remote")
+    output_dir = local_path("WebHostLib", "static", "generated")  # TODO: move to user_path
 
 def update_sprites_lttp(
     parallel: bool = True,
