@@ -277,7 +277,7 @@ def generate_itempool(world):
     # set up item pool
     additional_triforce_pieces = 0
     treasure_hunt_total = 0
-    if multiworld.custom:
+    if world.custom:
         pool, placed_items, precollected_items, clock_mode, treasure_hunt_required = (
             make_custom_item_pool(multiworld, player))
     else:

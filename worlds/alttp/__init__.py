@@ -307,6 +307,10 @@ class ALTTPWorld(World):
         self.required_medallions = ["Ether", "Quake"]
         self.escape_assist = []
         self.shops = []
+        self.custom = False
+        self.customitemarray = []
+        self.shuffle_ganon = True
+        
         super(ALTTPWorld, self).__init__(*args, **kwargs)
 
     @classmethod

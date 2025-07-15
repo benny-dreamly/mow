@@ -166,7 +166,7 @@ def main(args=None) -> tuple[argparse.Namespace, int]:
                         f"A mix is also permitted.")
 
     from worlds.AutoWorld import AutoWorldRegister
-    from worlds.alttp.EntranceRandomizer import parse_arguments
+    from EntranceRandomizer import parse_arguments
     erargs = parse_arguments(['--multi', str(args.multi)])
     erargs.seed = seed
     erargs.plando_options = args.plando

@@ -159,9 +159,6 @@ class MultiWorld():
         self.seed_name: str = "Unavailable"
         self.precollected_items = {player: [] for player in self.player_ids}
         self.required_locations = []
-        self.custom = False
-        self.customitemarray = []
-        self.shuffle_ganon = True
         self.spoiler = Spoiler(self)
         self.early_items = {player: {} for player in self.player_ids}
         self.local_early_items = {player: {} for player in self.player_ids}

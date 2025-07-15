@@ -41,6 +41,7 @@ from .Text import KingsReturn_texts, Sanctuary_texts, Kakariko_texts, Blacksmith
 from .Items import item_table, item_name_groups, progression_items
 from .EntranceShuffle import door_addresses
 from .Options import small_key_shuffle
+from .utils import get_shuffle_ganon
 
 try:
     from maseya import z3pr
@@ -888,7 +889,7 @@ def patch_rom(world: MultiWorld, rom: LocalRom, player: int, enemized: bool):
                         rom.write_int16(0x15DB5 + 2 * offset, 0x0640)
                     elif room_id == 0x00d6 and local_world.fix_trock_exit:
                         rom.write_int16(0x15DB5 + 2 * offset, 0x0134)
-                    elif room_id == 0x000c and world.shuffle_ganon:  # fix ganons tower exit point
+                    elif room_id == 0x000c and get_shuffle_ganon(world, player):  # fix ganons tower exit point
                         rom.write_int16(0x15DB5 + 2 * offset, 0x00A4)
                     else:
                         rom.write_int16(0x15DB5 + 2 * offset, link_y)
@@ -2265,7 +2266,7 @@ def write_strings(rom, world, player):
             # First we take care of the one inconvenient dungeon in the appropriately simple shuffles.
             entrances_to_hint = {}
             entrances_to_hint.update(InconvenientDungeonEntrances)
-            if world.shuffle_ganon:
+            if get_shuffle_ganon(world, player):
                 if world.mode[player] == 'inverted':
                     entrances_to_hint.update({'Inverted Ganons Tower': 'The sealed castle door'})
                 else:
@@ -2318,7 +2319,7 @@ def write_strings(rom, world, player):
                 entrances_to_hint.update({'Big Bomb Shop': 'The old bomb shop'})
             if world.entrance_shuffle[player] != 'insanity':
                 entrances_to_hint.update(InsanityEntrances)
-                if world.shuffle_ganon:
+                if get_shuffle_ganon(world, player):
                     if world.mode[player] == 'inverted':
                         entrances_to_hint.update({'Inverted Pyramid Entrance': 'The extra castle passage'})
                     else:

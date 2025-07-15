@@ -498,6 +498,14 @@ class ALTTPSNIClient(SNIClient):
     async def validate_rom(self, ctx) -> bool:
         from SNIClient import snes_read
 
+        # Handle ROM adjustment for .aplttp files
+        if hasattr(ctx, 'rom_file') and ctx.rom_file and ctx.rom_file.endswith('.aplttp'):
+            adjustedromfile, adjusted = get_alttp_settings(ctx.rom_file)
+            if adjusted:
+                # Update the ROM file path to the adjusted version
+                ctx.rom_file = adjustedromfile
+                logging.info(f"Applied ALttP ROM adjustments: {ctx.rom_file}")
+
         rom_name = await snes_read(ctx, ROMNAME_START, ROMNAME_SIZE)
         if rom_name is None or all(byte == b"\x00" for byte in rom_name) or rom_name[:2] != b"AP":
             return False
