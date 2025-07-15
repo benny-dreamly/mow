@@ -294,8 +294,8 @@ Sent by the client to initiate a connection to an MultiworldGG game session.
 | password       | str                               | If the game session requires a password, it should be passed here.                           |
 | game           | str                               | The name of the game the client is playing. Example: `A Link to the Past`                    |
 | name           | str                               | The player name for this client.                                                             |
-| uuid           | str                               | Unique identifier for player client.                                                         |
-| version        | [NetworkVersion](#NetworkVersion) | An object representing the MultiworldGG version this client supports.                         |
+| uuid           | str                               | Unique identifier for player. Cached in the user cache \Archipelago\Cache\common.json        |
+| version        | [NetworkVersion](#NetworkVersion) | An object representing the Archipelago version this client supports.                         |
 | items_handling | int                               | Flags configuring which items should be sent by the server. Read below for individual flags. |
 | tags           | list\[str\]                       | Denotes special features or capabilities that the sender is capable of. [Tags](#Tags)        |
 | slot_data      | bool                              | If true, the Connect answer will contain slot_data                                           |
