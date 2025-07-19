@@ -12,6 +12,7 @@ def setup_lib_path():
     """Takes the local dependencies and moves them out of the apworld zip file to a temporary directory so the DLLs can be loaded."""
     base_path = os.path.dirname(__file__)
     lib_path = os.path.join(base_path, "lib")
+
     if ".apworld" in __file__:
         zip_file_path = __file__
         while not zip_file_path.lower().endswith(".apworld"):
@@ -57,14 +58,15 @@ def _validate_temp_dir(target_dir_path) -> bool:
         required_files = [
             os.path.join("metroidprime", "lib", "py_randomprime", "version.py"),
             os.path.join("metroidprime", "lib", "ppc_asm", "version.py"),
-            os.path.join("metroidprime", "lib", "dolphin_memory_engine", "version.py"),
         ]
         for file in required_files:
             file_path = os.path.join(target_dir_path, file)
             if not os.path.exists(file_path):
+                print(f"Required file missing: {file_path}")
                 return False
         return True
     except Exception as e:
+        print(f"Failed to validate temp directory: {e}")
         return False
 
 

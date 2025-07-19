@@ -123,6 +123,7 @@ class MetroidPrimeWorld(World):
 
     game = "Metroid Prime"
     author: str = "Electro15"
+    web = MetroidPrimeWeb()
     required_client_version = (0, 5, 0)
     options_dataclass = MetroidPrimeOptions
     options: MetroidPrimeOptions  # type: ignore
@@ -130,7 +131,6 @@ class MetroidPrimeWorld(World):
     item_name_to_id = {name: data.code for name, data in item_table.items()}
     location_name_to_id = every_location
     settings: MetroidPrimeSettings  # type: ignore
-    web = MetroidPrimeWeb()
     item_name_groups = {"Artifacts": set(artifact_table.keys())}
     starting_room_data: StartRoomData
     prefilled_item_map: Dict[str, str] = {}  # Dict of location name to item name

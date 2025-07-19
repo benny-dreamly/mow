@@ -86,6 +86,7 @@ Currently, the following games are supported:
 * Kirby's Dream Land 3
 * Kirby 64
 * Landstalker
+* Lego Star Wars: The Complete Saga
 * Lethal Company
 * Lingo
 * Lufia II Ancient Cave
