@@ -97,7 +97,7 @@ class LocalRom:
             # cause crash to provide traceback
             import xxtea
 
-        local_random = world.per_slot_randoms[player]
+        local_random = multiworld.worlds[player].random
         key = bytes(local_random.getrandbits(8 * 16).to_bytes(16, 'big'))
         self.write_bytes(0x1800B0, bytearray(key))
         self.write_int16(0x180087, 1)
@@ -391,7 +391,7 @@ def patch_enemizer(world, rom: LocalRom, enemizercli, output_directory):
 
     max_enemizer_tries = 5
     for i in range(max_enemizer_tries):
-        enemizer_seed = str(multiworld.per_slot_randoms[player].randint(0, 999999999))
+        enemizer_seed = str(world.random.randint(0, 999999999))
         enemizer_command = [os.path.abspath(enemizercli),
                             '--rom', randopatch_path,
                             '--seed', enemizer_seed,
@@ -421,7 +421,7 @@ def patch_enemizer(world, rom: LocalRom, enemizercli, output_directory):
             continue
 
         for j in range(i + 1, max_enemizer_tries):
-            multiworld.per_slot_randoms[player].randint(0, 999999999)
+            world.random.randint(0, 999999999)
             # Sacrifice all remaining random numbers that would have been used for unused enemizer tries.
             # This allows for future enemizer bug fixes to NOT affect the rest of the seed's randomness
         break
@@ -1698,7 +1698,7 @@ def patch_rom(world: MultiWorld, rom: LocalRom, player: int, enemized: bool):
         rom.write_byte(0xFEE41, 0x2A)  # bombable exit
 
     if world.tile_shuffle[player]:
-        tile_set = TileSet.get_random_tile_set(world.per_slot_randoms[player])
+        tile_set = TileSet.get_random_tile_set(world.random)
         rom.write_byte(0x4BA21, tile_set.get_speed())
         rom.write_byte(0x4BA1D, tile_set.get_len())
         rom.write_bytes(0x4BA2A, tile_set.get_bytes())
