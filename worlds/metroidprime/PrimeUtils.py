@@ -62,7 +62,6 @@ def _validate_temp_dir(target_dir_path) -> bool:
         for file in required_files:
             file_path = os.path.join(target_dir_path, file)
             if not os.path.exists(file_path):
-                print(f"Required file missing: {file_path}")
                 return False
         return True
     except Exception as e:
