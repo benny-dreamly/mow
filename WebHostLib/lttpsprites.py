@@ -6,7 +6,7 @@ from tqdm import tqdm
 
 from Utils import local_path, user_path
 from worlds.alttp.Rom import Sprite
-from LttPAdjuster import get_image_for_sprite, update_sprites
+from worlds.alttp.Adjuster import get_image_for_sprite, update_sprites
 
 class NullTask:
     def update_status(self, text: str):

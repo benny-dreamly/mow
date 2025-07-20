@@ -78,7 +78,6 @@ class MultiWorld():
     is_race: bool = False
     precollected_items: Dict[int, List[Item]]
     state: CollectionState
-
     plando_options: PlandoOptions
     early_items: Dict[int, Dict[str, int]]
     local_early_items: Dict[int, Dict[str, int]]

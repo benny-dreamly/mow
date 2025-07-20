@@ -25,7 +25,8 @@ ModuleUpdate.update()
 
 from worlds.alttp.Rom import Sprite, LocalRom, apply_rom_settings, get_base_rom_bytes
 from Utils import output_path, local_path, user_path, open_file, get_cert_none_ssl_context, persistent_store, \
-    get_adjuster_settings, get_adjuster_settings_no_defaults, tkinter_center_window, init_logging
+    tkinter_center_window, init_logging
+from .utils import get_adjuster_settings, get_adjuster_settings_no_defaults
 try:
     from Utils import instance_name as apname
 except ImportError:
@@ -173,9 +174,9 @@ def get_argparser() -> argparse.ArgumentParser:
     return parser
 
 
-def main():
+def main(launcher_args):
     parser = get_argparser()
-    args = parser.parse_args(namespace=get_adjuster_settings_no_defaults(GAME_ALTTP))
+    args = parser.parse_args(launcher_args, namespace=get_adjuster_settings_no_defaults(GAME_ALTTP))
     
     # set up logger
     loglevel = {'error': logging.ERROR, 'info': logging.INFO, 'warning': logging.WARNING, 'debug': logging.DEBUG}[
@@ -1425,5 +1426,5 @@ class ToolTips(object):
             cls.after_id = None
 
 
-if __name__ == '__main__':
-    main()
+def launch(*launcher_args):
+    main(launcher_args)

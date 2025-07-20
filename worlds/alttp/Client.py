@@ -12,6 +12,7 @@ from worlds.AutoSNIClient import SNIClient
 
 from . import Shops, Regions
 from .Rom import ROM_PLAYER_LIMIT
+from .utils import get_adjuster_settings, get_adjuster_settings_no_defaults
 
 snes_logger = logging.getLogger("SNES")
 
@@ -589,11 +590,11 @@ class ALTTPSNIClient(SNIClient):
 
 
 def get_alttp_settings(romfile: str):
-    import LttPAdjuster
+    import Adjuster
 
     adjustedromfile = ''
-    if vars(Utils.get_adjuster_settings_no_defaults(GAME_ALTTP)):
-        last_settings = Utils.get_adjuster_settings(GAME_ALTTP)
+    if vars(get_adjuster_settings_no_defaults(GAME_ALTTP)):
+        last_settings = get_adjuster_settings(GAME_ALTTP)
 
         allow_list = {"music", "menuspeed", "heartbeep", "heartcolor", "ow_palettes", "quickswap",
                     "uw_palettes", "sprite", "sword_palettes", "shield_palettes", "hud_palettes",
@@ -689,18 +690,18 @@ def get_alttp_settings(romfile: str):
             choice = 'yes'
 
         if 'yes' in choice:
-            import LttPAdjuster
+            import Adjuster
             from .Rom import get_base_rom_path
             last_settings.rom = romfile
             last_settings.baserom = get_base_rom_path()
             last_settings.world = None
 
             if last_settings.sprite_pool:
-                from LttPAdjuster import AdjusterWorld
+                from Adjuster import AdjusterWorld
                 last_settings.world = AdjusterWorld(getattr(last_settings, "sprite_pool"))
 
             adjusted = True
-            _, adjustedromfile = LttPAdjuster.adjust(last_settings)
+            _, adjustedromfile = Adjuster.adjust(last_settings)
 
             if hasattr(last_settings, "world"):
                 delattr(last_settings, "world")
