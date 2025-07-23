@@ -54,25 +54,15 @@ class StardewWebWorld(WebWorld):
     options_presets = sv_options_presets
     option_groups = sv_option_groups
 
-    setup_en = Tutorial(
-        "Multiworld Setup Guide",
-        "A guide to playing Stardew Valley with MultiworldGG.",
-        "English",
-        "setup_en.md",
-        "setup/en",
-        ["KaitoKid", "Jouramie", "Witchybun (Mod Support)", "Exempt-Medic (Proofreading)"]
-    )
-
-    setup_fr = Tutorial(
-        "Guide de configuration MultiWorld",
-        "Un guide pour configurer Stardew Valley sur MultiworldGG",
-        "Français",
-        "setup_fr.md",
-        "setup/fr",
-        ["Eindall"]
-    )
-
-    tutorials = [setup_en, setup_fr]
+    tutorials = [
+        Tutorial(
+            "Multiworld Setup Guide",
+            "A guide to playing Stardew Valley with Archipelago.",
+            "English",
+            "setup_en.md",
+            "setup/en",
+            ["KaitoKid", "Jouramie", "Witchybun (Mod Support)", "Exempt-Medic (Proofreading)"]
+        )]
 
 
 if TRACKER_ENABLED:
@@ -103,7 +93,6 @@ class StardewValleyWorld(World):
     befriend villagers, and uncover dark secrets.
     """
     game = STARDEW_VALLEY
-    author: str = "Kaito Kid"
     topology_present = False
 
     item_name_to_id = {name: data.code for name, data in item_table.items()}

@@ -10,7 +10,6 @@ on:
 
 env:
   ENEMIZER_VERSION: 7.1
-  APPIMAGETOOL_VERSION: 13
 
 permissions:  # permissions required for attestation
   id-token: 'write'
@@ -121,7 +120,7 @@ jobs:
       - name: Install build-time dependencies
         run: |
           echo "PYTHON=python3.12" >> $GITHUB_ENV
-          wget -nv https://github.com/AppImage/AppImageKit/releases/download/$APPIMAGETOOL_VERSION/appimagetool-x86_64.AppImage
+          wget -nv https://github.com/AppImage/appimagetool/releases/download/continuous/appimagetool-x86_64.AppImage
           chmod a+rx appimagetool-x86_64.AppImage
           ./appimagetool-x86_64.AppImage --appimage-extract
           echo -e '#/bin/sh\n./squashfs-root/AppRun "$@"' > appimagetool

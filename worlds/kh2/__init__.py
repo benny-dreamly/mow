@@ -2,9 +2,8 @@ import logging
 from typing import List
 
 from BaseClasses import Tutorial, ItemClassification
-from Utils import local_path
 from Fill import fast_fill
-from worlds.LauncherComponents import Component, components, Type, icon_paths, launch as launch_component
+from worlds.LauncherComponents import Component, components, Type, launch as launch_component
 from worlds.AutoWorld import World, WebWorld
 from .Items import *
 from .Locations import *
@@ -16,14 +15,12 @@ from .Rules import *
 from .Subclasses import KH2Item
 
 
-
 def launch_client():
-    from .Client import launch
+    from .ClientStuff.Client import launch
     launch_component(launch, name="KH2Client")
 
 
-components.append(Component("KH2Client", "KH2Client", func=launch_client, component_type=Type.CLIENT, icon='khapicon'))
-icon_paths['khapicon'] = local_path('data', 'khapicon.png')
+components.append(Component("KH2 Client", "KH2Client", func=launch_client, component_type=Type.CLIENT))
 
 
 class KingdomHearts2Web(WebWorld):
@@ -106,16 +103,16 @@ class KH2World(World):
                 self.goofy_ability_dict[ability] -= 1
 
         slot_data = self.options.as_dict(
-            "Goal", 
-            "FinalXemnas", 
-            "LuckyEmblemsRequired", 
-            "BountyRequired",
-            "FightLogic",
-            "FinalFormLogic",
-            "AutoFormLogic",
-            "LevelDepth",
-            "DonaldGoofyStatsanity",
-            "CorSkipToggle"
+                "Goal",
+                "FinalXemnas",
+                "LuckyEmblemsRequired",
+                "BountyRequired",
+                "FightLogic",
+                "FinalFormLogic",
+                "AutoFormLogic",
+                "LevelDepth",
+                "DonaldGoofyStatsanity",
+                "CorSkipToggle"
         )
         slot_data.update({
             "hitlist":                [],  # remove this after next update
@@ -205,6 +202,9 @@ class KH2World(World):
         """
         Determines the quantity of items and maps plando locations to items.
         """
+        if self.player_name != self.multiworld.get_file_safe_player_name(self.player):
+            raise Exception(f"{self.player_name} yaml name contains characters not supported for kingdom hearts 2")
+
         # Item: Quantity Map
         # Example. Quick Run: 4
         self.total_locations = len(all_locations.keys())

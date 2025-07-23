@@ -1,8 +1,8 @@
 # API Guide
 
-Archipelago has a rudimentary API that can be queried by endpoints. The API is a work-in-progress and should be improved over time.
+MultiworldGG has a rudimentary API that can be queried by endpoints. The API is a work-in-progress and should be improved over time.
 
-The following API requests are formatted as: `https://<Archipelago URL>/api/<endpoint>`
+The following API requests are formatted as: `https://<MultiworldGG URL>/api/<endpoint>`
 
 The returned data will be formated in a combination of JSON lists or dicts, with their keys or values being notated in `blocks` (if applicable)
 
@@ -22,12 +22,12 @@ Current endpoints:
 
 
 ## Datapackage Endpoints
-These endpoints are used by applications to acquire a room's datapackage, and validate that they have the correct datapackage for use. Datapackages normally include, item IDs, location IDs, and name groupings, for a given room, and are essential for mapping IDs received from Archipelago to their correct items or locations.
+These endpoints are used by applications to acquire a room's datapackage, and validate that they have the correct datapackage for use. Datapackages normally include, item IDs, location IDs, and name groupings, for a given room, and are essential for mapping IDs received from MultiworldGG to their correct items or locations.
 
 ### `/datapackage`
 <a name="datapackage"></a>
 Fetches the current datapackage from the WebHost.  
-You'll receive a dict named `games` that contains a named dict of every game and its data currently supported by Archipelago.  
+You'll receive a dict named `games` that contains a named dict of every game and its data currently supported by MultiworldGG.  
 Each game will have:
 - A checksum `checksum`
 - A dict of item groups `item_name_groups`
@@ -114,7 +114,7 @@ If the options are valid, you'll be returned a successful generation response. (
 Example using the python requests library:
 ```
 file = {'file': open('Games.zip', 'rb')}
-req = requests.post("https://archipelago.gg/api/generate", files=file)
+req = requests.post("https://multiworld.gg/api/generate", files=file)
 ```
 
 #### With JSON:
@@ -126,7 +126,7 @@ Example using the python requests library:
 ```
 data = {"Test":{"game": "Factorio","name": "Test","Factorio": {}},}
 weights={"weights": data}
-req = requests.post("https://archipelago.gg/api/generate", json=weights)
+req = requests.post("https://multiworld.gg/api/generate", json=weights)
 ```
 
 #### Generation Response:
@@ -144,8 +144,8 @@ Example:
     "detail": "19878f16-5a58-4b76-aab7-d6bf38be9463",
     "encoded": "GYePFlpYS3aqt9a_OL6UYw",
     "text": "Generation of seed 19878f16-5a58-4b76-aab7-d6bf38be9463 started successfully.",
-    "url": "http://archipelago.gg/wait/GYePFlpYS3aqt9a_OL6UYw",
-    "wait_api_url": "http://archipelago.gg/api/status/GYePFlpYS3aqt9a_OL6UYw"
+    "url": "http://multiworld.gg/wait/GYePFlpYS3aqt9a_OL6UYw",
+    "wait_api_url": "http://multiworld.gg/api/status/GYePFlpYS3aqt9a_OL6UYw"
 }
 ```
 
