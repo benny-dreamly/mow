@@ -57,7 +57,7 @@ class StardewWebWorld(WebWorld):
     tutorials = [
         Tutorial(
             "Multiworld Setup Guide",
-            "A guide to playing Stardew Valley with MultiworldGG.",
+            "A guide to playing Stardew Valley with Archipelago.",
             "English",
             "setup_en.md",
             "setup/en",
@@ -93,7 +93,6 @@ class StardewValleyWorld(World):
     befriend villagers, and uncover dark secrets.
     """
     game = STARDEW_VALLEY
-    author: str = "Kaito Kid"
     topology_present = False
 
     item_name_to_id = {name: data.code for name, data in item_table.items()}

@@ -8,8 +8,8 @@ Work-in-progress.
   - Running the 'steamless' executable is not expected to work currently, but is untested and should be supported in the
 future.
   - The retail PC release is not expected to work currently, unless it is identical to the GOG version.
-- MultiworldGG
-- Lego Star Wars: The Complete Saga apworld (ships with MWGG)
+- Archipelago
+- Lego Star Wars: The Complete Saga apworld
 - Windows Operating System
   - The client uses the `pymem` library, to read from/write to the game's memory, which only supports Windows.
 
@@ -26,23 +26,21 @@ Universal Tracker channel in the Archipelago discord server)
 
 ## Apworld Installation Instructions
 
-*Note*: This step is not needed with MultiworldGG.
-
 Install the Lego Star Wars: The Complete Saga apworld by either directly putting it into your `custom_worlds` folder,
-or by dragging and dropping the apworld onto the MultiworldGG Launcher.
+or by dragging and dropping the apworld onto the Archipelago Launcher.
 
-The MultiworldGG Launcher will need to be restarted if it was already open when the apworld was installed.
+The Archipelago Launcher will need to be restarted if it was already open when the apworld was installed.
 
-## Connecting to the MultiworldGG server
+## Connecting to the Archipelago server
 When connecting to a multiworld for the first time, a new game should be started. Save slots are bound to the first
 multiworld and slot name they were connected to. To resume playing a multiworld at a later time, the same save slot that
 initially connected to that multiworld should be loaded. 
 
-To connect to the multiworld server, run the **Lego Star Wars: The Complete Saga Client** from the **MultiworldGG Launcher**
-and connect it to the MultiworldGG server. Lego Star Wars: The Complete Saga must be running before a connection can be
+To connect to the multiworld server, run the **Lego Star Wars: The Complete Saga Client** from the **Archipelago Launcher**
+and connect it to the Archipelago server. Lego Star Wars: The Complete Saga must be running before a connection can be
 made.
 
-The first time a save file connects to an MultiworldGG server, the slot name needs to be entered. After that, the slot
+The first time a save file connects to an Archipelago server, the slot name needs to be entered. After that, the slot
 name will be set into the save data and read automatically from the save file by the client when connecting.
 
 An in-game message will be displayed when the client is fully connected and running.

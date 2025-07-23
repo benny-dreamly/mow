@@ -96,6 +96,7 @@ Currently, the following games are supported:
 * Mario & Luigi Superstar Saga
 * Mega Man 2
 * Mega Man Battle Network 3
+* Mega Man X3
 * Meritous
 * Metroid Prime
 * Metroid Zero Mission
@@ -173,6 +174,7 @@ Currently, the following games are supported:
 * The Legend of Zelda: The Wind Waker
 * The Legend of Zelda: Twilight Princess
 * The Messenger
+* The Simpsons: Hit And Run
 * The Sims 4
 * The Witness
 * Toontown

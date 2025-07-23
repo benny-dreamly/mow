@@ -25,7 +25,7 @@ class PaintWebWorld(WebWorld):
 
 class PaintWorld(World):
     """
-    The classic Microsoft app, reimagined as an Archipelago game! Find your tools, expand your canvas, and paint the
+    The classic Microsoft app, reimagined as a MultiworldGG game! Find your tools, expand your canvas, and paint the
     greatest image the world has ever seen.
     """
     game = "Paint"
