@@ -15,6 +15,7 @@ def get_option_value(multiworld: MultiWorld, player: int, name: str) -> Union[in
     option = getattr(multiworld.worlds[player].options, name, None)
     if option is None:
         return 0
+
     return option.value
 
 def clamp(value, min, max):
