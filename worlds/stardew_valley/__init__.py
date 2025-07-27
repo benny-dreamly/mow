@@ -93,6 +93,7 @@ class StardewValleyWorld(World):
     befriend villagers, and uncover dark secrets.
     """
     game = STARDEW_VALLEY
+    author: str = "Kaito Kid"
     topology_present = False
 
     item_name_to_id = {name: data.code for name, data in item_table.items()}

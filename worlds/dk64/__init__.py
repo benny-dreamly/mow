@@ -209,7 +209,7 @@ if baseclasses_loaded:
 
         theme = "jungle"
 
-        setup_en = Tutorial("Multiworld Setup Guide", "A guide to setting up the Donkey Kong 64 randomizer connected to an Archipelago Multiworld.", "English", "setup_en.md", "setup/en", ["PoryGone"])
+        setup_en = Tutorial("Multiworld Setup Guide", "A guide to setting up the Donkey Kong 64 randomizer connected to a MWGG Multiworld.", "English", "setup_en.md", "setup/en", ["PoryGone"])
 
         tutorials = [setup_en]
 
@@ -220,6 +220,7 @@ if baseclasses_loaded:
         """
 
         game: str = "Donkey Kong 64"
+        author: str = "2dos, Killklli, & Ballaam"
         options_dataclass = DK64Options
         options: DK64Options
         topology_present = False
@@ -701,7 +702,6 @@ if baseclasses_loaded:
                     "Aztec Diddy Vulture Race",
                     "Aztec Tiny Beetle Race",
                     "Factory Donkey DK Arcade Round 1",
-                    "Galleon Donkey Seal Race",
                     "Forest Chunky Minecart",
                     "Forest Donkey Baboon Blast",
                     "Forest Diddy Owl Race",
@@ -722,18 +722,21 @@ if baseclasses_loaded:
                     "Helm Fairy (Key 8 Room (2))",
                     "Galleon Diddy Mechfish",
                     "Jetpac",
-                    "Forest Chunky Keg Crushing",
                     "Aztec Tiny Llama Temple Lava Pedestals",
                     "Galleon Chunky Cannon Game",
                     "Galleon Tiny Medal",
                     "Factory Chunky Toy Monster",
                     "Castle Tiny Car Race",
-                    "Forest Fairy (Dark Rafters)",
-                    "Galleon Donkey Free the Seal",
                     "Caves Dirt: Giant Kosha",
                     "Castle Lanky Tower",
                     "Castle Donkey Tree Sniping",
-                    "Castle Chunky Tree Sniping Barrel",
+                    "Japes Boss Defeated",
+                    "Aztec Boss Defeated",
+                    "Factory Boss Defeated",
+                    "Galleon Boss Defeated",
+                    "Forest Boss Defeated",
+                    "Caves Boss Defeated",
+                    "Castle Boss Defeated",
                 ]
 
                 # Look through every location in the multiworld and find all the DK64 items that are progression
