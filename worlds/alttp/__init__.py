@@ -765,7 +765,7 @@ class ALTTPWorld(World):
                              f" {self.pyramid_fairy_bottle_fill}")
         spoiler_handle.write(f"\nWaterfall Fairy ({player_name}):"
                              f" {self.waterfall_fairy_bottle_fill}")
-        if self.options.boss_shuffle[self.player] != "none":
+        if self.options.boss_shuffle != "none":
             def create_boss_map() -> typing.Dict:
                 boss_map = {
                     "Eastern Palace": self.dungeons["Eastern Palace"].boss.name,
@@ -891,8 +891,8 @@ def get_same_seed(world, seed_def: tuple) -> str:
 
 class ALttPLogic(LogicMixin):
     def _lttp_has_key(self, item, player, count: int = 1):
-        if self.options.glitches_required == 'no_logic':
+        if self.multiworld.worlds[player].options.glitches_required == 'no_logic':
             return True
-        if self.options.small_key_shuffle == small_key_shuffle.option_universal:
+        if self.multiworld.worlds[player].options.small_key_shuffle == small_key_shuffle.option_universal:
             return can_buy_unlimited(self, 'Small Key (Universal)', player)
         return self.prog_items[player][item] >= count
