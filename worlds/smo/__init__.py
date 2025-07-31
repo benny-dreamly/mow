@@ -436,7 +436,8 @@ class SMOWorld(World):
 
 
     def generate_output(self, output_directory: str):
-        out_base = output_path(output_directory, self.multiworld.get_out_file_name_base(self.player))
-        patch = SMOProcedurePatch(player=self.player, player_name=self.multiworld.get_player_name(self.player))
-        write_patch(self, patch)
-        patch.write(os.path.join(output_directory, f"{out_base}{patch.patch_file_ending}"))
+        if self.options.colors.value or self.options.counts.value > 0 or self.options.shop_sanity.value > 0:
+            out_base = output_path(output_directory, self.multiworld.get_out_file_name_base(self.player))
+            patch = SMOProcedurePatch(player=self.player, player_name=self.multiworld.get_player_name(self.player))
+            write_patch(self, patch)
+            patch.write(os.path.join(output_directory, f"{out_base}{patch.patch_file_ending}"))
