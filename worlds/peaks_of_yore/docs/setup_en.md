@@ -25,12 +25,12 @@ The mod manager should automatically install all necessary dependencies as well.
 
 ## Running the Modded Game
 
-Click on the `Start modded` button in the top left in `r2modman` to start the game with the Archipelago mod installed.
+Click on the `Start modded` button in the top left in `r2modman` to start the game with the MultiworldGG mod installed.
 
 ## Configuring your YAML File
 ### What is a YAML and why do I need one?
-You can see the [basic multiworld setup guide](/tutorial/Archipelago/setup/en) here on the Archipelago website to learn 
-about why Archipelago uses YAML files and what they're for.
+You can see the [basic multiworld setup guide](/tutorial/Archipelago/setup/en) here on the MultiworldGG website to learn 
+about why MultiworldGG uses YAML files and what they're for.
 
 ### Where do I get a YAML?
 You can use the [game options page](../player-options) here on the Archipelago 
@@ -44,7 +44,7 @@ Once the game is launched, if everything is installed correctly, you should see 
 After clicking on **Mods** to open the in-game mod manager, you should see all the installed mods,
 and go to the Peaks Of Archipelago config, this is where you connect to
 the server, enter your slot name (the name entered when preparing your yaml file), the hostname and port so for
-example: `archipelago.gg:60324` becomes `hostname=archipelago.gg` and `port=60324`, add a password if necessary.
+example: `multiworld.gg:60324` becomes `hostname=multiworld.gg` and `port=60324`, add a password if necessary.
 
 ![an image showing the steps necessary to connect to the AP server](https://github.com/EliottDup/image-repo/blob/909de8bd643c3a67c3a431c8608db8477d4fdf99/settings.png?raw=true)
 
