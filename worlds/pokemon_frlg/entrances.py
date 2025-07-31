@@ -179,7 +179,7 @@ def shuffle_entrances(world: "PokemonFRLGWorld"):
                         disconnect_entrance_for_randomization(exit, exit.randomization_group)
 
 
-def connect_simple_entrances(er_state: ERPlacementState, placed_entrances: List[Entrance]):
+def connect_simple_entrances(er_state: ERPlacementState, placed_entrances: List[Entrance], placements_made: bool):
     world: "PokemonFRLGWorld" = er_state.world
     if world.options.dungeon_entrance_shuffle != DungeonEntranceShuffle.option_simple:
         return

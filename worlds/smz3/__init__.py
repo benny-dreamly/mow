@@ -99,7 +99,6 @@ class SMZ3World(World):
             ItemType.TwentyRupees,
             ItemType.FiftyRupees,
             ItemType.ThreeHundredRupees,
-            ItemType.ETank,
             ItemType.Missile,
             ItemType.Super,
             ItemType.PowerBomb
@@ -233,7 +232,6 @@ class SMZ3World(World):
 
         niceItems = TotalSMZ3Item.Item.CreateNicePool(self.smz3World)
         junkItems = TotalSMZ3Item.Item.CreateJunkPool(self.smz3World)
-        self.junkItemsNames = [item.Type.name for item in junkItems]
 
         if (self.smz3World.Config.Keysanity):
             progressionItems = self.progression + self.dungeon + self.keyCardsItems + self.SmMapsItems

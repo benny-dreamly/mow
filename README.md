@@ -169,6 +169,7 @@ Currently, the following games are supported:
 * The Legend of Zelda: Ocarina of Time
 * The Legend of Zelda: Oracle of Ages
 * The Legend of Zelda: Oracle of Seasons
+* The Legend of Zelda: Phantom Hourglass
 * The Legend of Zelda: Skyward Sword
 * The Legend of Zelda: The Minish Cap
 * The Legend of Zelda: The Wind Waker

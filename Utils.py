@@ -246,6 +246,8 @@ def cache_path(*path: str) -> str:
     else:
         import platformdirs
         cache_path.cached_path = platformdirs.user_cache_dir(instance_name, False)
+        # Ensure the cache directory exists
+        os.makedirs(cache_path.cached_path, exist_ok=True)
 
     return os.path.join(cache_path.cached_path, *path)
 
