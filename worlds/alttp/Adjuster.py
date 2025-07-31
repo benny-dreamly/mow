@@ -285,7 +285,9 @@ def adjustGUI():
     # --- Output Directory Frame ---
     outputDialogFrame = Frame(adjustWindow, padx=8, pady=2)
     outputLabel = Label(outputDialogFrame, text='Output Directory:')
-    outputDirVar = StringVar(value=local_path('output'))  # default value
+    # Load output path from saved settings, fallback to default if not saved
+    adjuster_settings = get_adjuster_settings(GAME_ALTTP)
+    outputDirVar = StringVar(value=getattr(adjuster_settings, 'output', local_path('output')))
     outputEntry = Entry(outputDialogFrame, textvariable=outputDirVar)
 
     def OutputSelect():
