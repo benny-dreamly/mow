@@ -50,14 +50,23 @@ class SMOProcedurePatch(APProcedurePatch):
 
         patch_data["atmosphere/contents/0100000000010000/romfs/SystemData/ItemList.szs"] = patch_items(rom_fs, options)
 
-        patch_dir = os.path.join(self.path[:self.path.rindex("/")], "atmosphere/contents/0100000000010000/romfs/")
-        os.makedirs(os.path.join(patch_dir, "LocalizedData/USen/MessageData/"))
-        os.mkdir(os.path.join(patch_dir, "SystemData"))
-        os.mkdir(os.path.join(patch_dir, "StageData"))
+        # Handle both forward slashes and backslashes
+        if "/" in self.path:
+            base_path = self.path[:self.path.rindex("/")]
+        elif "\\" in self.path:
+            base_path = self.path[:self.path.rindex("\\")]
+        else:
+            base_path = os.path.dirname(self.path)
+            
+        patch_dir = os.path.join(base_path, "atmosphere/contents/0100000000010000/romfs/")
+        os.makedirs(os.path.join(patch_dir, "LocalizedData/USen/MessageData/"), exist_ok=True)
+        os.makedirs(os.path.join(patch_dir, "SystemData"), exist_ok=True)
+        os.makedirs(os.path.join(patch_dir, "StageData"), exist_ok=True)
         for archive in patch_data:
-            file = open(os.path.join(self.path[:self.path.rindex("/")], archive), "wb")
-            file.write(patch_data[archive])
-            file.close()
+            file_path = os.path.join(base_path, archive)
+            os.makedirs(os.path.dirname(file_path), exist_ok=True)
+            with open(file_path, "wb") as file:
+                file.write(patch_data[archive])
 
 def write_patch(self, patch : SMOProcedurePatch) -> None:
     data = {}

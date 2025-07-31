@@ -170,7 +170,7 @@ class Data:
 
 
     def import_json(self, file_name):
-        json_dir = os.path.join(Utils.home_path(), "sm64hack_jsons")
+        json_dir = os.path.join(Utils.local_path("data", "sm64hacks"))
         os.makedirs(json_dir, exist_ok=True)
         json_file = list(Path(json_dir).rglob(file_name)) #external takes priority over internal
         local_file = True
