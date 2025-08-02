@@ -907,15 +907,11 @@ def get_rom_options_frame(parent=None):
     spritePoolSelectButton.pack(side=LEFT)
     spritePoolClearButton.pack(side=LEFT)
 
-    # Random Event Settings Section
     randomEventFrame = LabelFrame(romOptionsFrame, text="Random Sprite Events", padx=8, pady=8)
     randomEventFrame.grid(row=6, column=0, columnspan=2, sticky=W+E, pady=(10, 0))
     
-    # Info text explaining what these do
     infoLabel = Label(randomEventFrame, text="Configure when Link's sprite should change randomly during gameplay:")
     infoLabel.pack(side=TOP, anchor=W, pady=(0, 5))
-    
-    # Initialize random event variables using existing YAML options
     vars.random_sprite_on_hit = getattr(adjuster_settings, 'random_sprite_on_hit', False)
     vars.random_sprite_on_enter = getattr(adjuster_settings, 'random_sprite_on_enter', False)
     vars.random_sprite_on_exit = getattr(adjuster_settings, 'random_sprite_on_exit', False)
@@ -923,8 +919,6 @@ def get_rom_options_frame(parent=None):
     vars.random_sprite_on_item = getattr(adjuster_settings, 'random_sprite_on_item', False)
     vars.random_sprite_on_bonk = getattr(adjuster_settings, 'random_sprite_on_bonk', False)
     vars.random_sprite_on_everything = getattr(adjuster_settings, 'random_sprite_on_everything', False)
-    
-    # Create checkboxes using existing YAML option names
     vars.randomSpriteOnHitVar = IntVar(value=vars.random_sprite_on_hit)
     vars.randomSpriteOnEnterVar = IntVar(value=vars.random_sprite_on_enter)
     vars.randomSpriteOnExitVar = IntVar(value=vars.random_sprite_on_exit)
@@ -932,8 +926,6 @@ def get_rom_options_frame(parent=None):
     vars.randomSpriteOnItemVar = IntVar(value=vars.random_sprite_on_item)
     vars.randomSpriteOnBonkVar = IntVar(value=vars.random_sprite_on_bonk)
     vars.randomSpriteOnEverythingVar = IntVar(value=vars.random_sprite_on_everything)
-    
-    # First row of checkboxes
     checkboxFrame1 = Frame(randomEventFrame)
     checkboxFrame1.pack(side=TOP, fill=X, pady=2)
     
@@ -949,7 +941,6 @@ def get_rom_options_frame(parent=None):
     slashCheck = Checkbutton(checkboxFrame1, text="Slash", variable=vars.randomSpriteOnSlashVar)
     slashCheck.pack(side=LEFT, padx=(0, 10))
     
-    # Second row of checkboxes
     checkboxFrame2 = Frame(randomEventFrame)
     checkboxFrame2.pack(side=TOP, fill=X, pady=2)
     
