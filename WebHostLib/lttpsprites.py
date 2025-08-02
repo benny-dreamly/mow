@@ -19,7 +19,7 @@ class NullTask:
         pass
 
     # Target directories
-    input_dir = user_path("data", "sprites", "remote")
+    input_dir = user_path("data", "sprites", "alttp", "remote")
     output_dir = local_path("WebHostLib", "static", "generated")  # TODO: move to user_path
 
 def update_sprites_lttp(

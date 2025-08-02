@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import Utils
+import settings
 import worlds.Files
 
 LTTPJPN10HASH: str = "03a63945398191337e896e5771f77173"
@@ -519,7 +520,8 @@ def _populate_sprite_table():
                     logging.debug(f"Spritefile {file} could not be loaded as a valid sprite.")
 
             with concurrent.futures.ThreadPoolExecutor() as pool:
-                sprite_paths = [user_path('data', 'sprites', 'remote'), user_path('data', 'sprites', 'custom')]
+                sprite_paths = [user_path("data", "sprites", "alttp", "remote"),
+                                user_path("data", "sprites", "alttp", "custom")]
                 for dir in [dir for dir in sprite_paths if os.path.isdir(dir)]:
                     for file in os.listdir(dir):
                         pool.submit(load_sprite_from_file, os.path.join(dir, file))
@@ -3029,7 +3031,7 @@ def get_base_rom_bytes(file_name: str = "") -> bytes:
 
 
 def get_base_rom_path(file_name: str = "") -> str:
-    options = Utils.get_settings()
+    options = settings.get_settings()
     if not file_name:
         file_name = options["lttp_options"]["rom_file"]
     if not os.path.exists(file_name):
