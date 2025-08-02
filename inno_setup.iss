@@ -86,10 +86,10 @@ Type: filesandordirs; Name: "{app}\EnemizerCLI*"
 
 [Registry]
 
-Root: HKCR; Subkey: ".aplttp";                                   ValueData: "{#MyAppName}patch";        Flags: uninsdeletevalue; ValueType: string;  ValueName: "";
-Root: HKCR; Subkey: "{#MyAppName}patch";                         ValueData: "MultiworldGG Binary Patch"; Flags: uninsdeletekey;   ValueType: string;  ValueName: "";
-Root: HKCR; Subkey: "{#MyAppName}patch\DefaultIcon";             ValueData: "{app}\MultiworldGGSNIClient.exe,0";                  ValueType: string;  ValueName: "";
-Root: HKCR; Subkey: "{#MyAppName}patch\shell\open\command";      ValueData: """{app}\MultiworldGGSNIClient.exe"" ""%1""";         ValueType: string;  ValueName: "";
+Root: HKCR; Subkey: ".aplttp";                                    ValueData: "{#MyAppName}alttppatch";        Flags: uninsdeletevalue; ValueType: string;  ValueName: "";
+Root: HKCR; Subkey: "{#MyAppName}alttppatch";                     ValueData: "MultiworldGG A Link to the Past Patch"; Flags: uninsdeletekey;   ValueType: string;  ValueName: "";
+Root: HKCR; Subkey: "{#MyAppName}alttppatch\DefaultIcon";         ValueData: "{app}\MultiworldGGSNIClient.exe,0";                  ValueType: string;  ValueName: "";
+Root: HKCR; Subkey: "{#MyAppName}alttppatch\shell\open\command";  ValueData: """{app}\MultiworldGGSNIClient.exe"" ""%1""";         ValueType: string;  ValueName: "";
 
 Root: HKCR; Subkey: ".apsm";                                     ValueData: "{#MyAppName}smpatch";        Flags: uninsdeletevalue; ValueType: string;  ValueName: "";
 Root: HKCR; Subkey: "{#MyAppName}smpatch";                       ValueData: "MultiworldGG Super Metroid Patch"; Flags: uninsdeletekey;   ValueType: string;  ValueName: "";
