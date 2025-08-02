@@ -334,6 +334,7 @@ async def nes_sync_task(ctx: ZeldaContext):
             except ConnectionRefusedError:
                 logger.debug("Connection Refused, Trying Again")
                 ctx.nes_status = CONNECTION_REFUSED_STATUS
+                await asyncio.sleep(1)
                 continue
 
 
