@@ -40,8 +40,6 @@ def main(args, seed=None, baked_server_options: dict[str, object] | None = None)
     multiworld.plando_options = args.plando_options
     multiworld.game = args.game.copy()
     multiworld.player_name = args.name.copy()
-    multiworld.sprite = args.sprite.copy()
-    multiworld.sprite_pool = args.sprite_pool.copy()
 
     multiworld.set_options(args)
     if args.csv_output:

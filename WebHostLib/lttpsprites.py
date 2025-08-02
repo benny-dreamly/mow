@@ -26,7 +26,7 @@ def update_sprites_lttp(
     parallel: bool = True,
     max_workers: int = None,
     skip_remote_update: bool = False,
-    remote_timeout: int = 10
+    remote_timeout: int = 5
 ):
 
     if not skip_remote_update:

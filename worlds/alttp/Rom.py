@@ -239,12 +239,14 @@ def apply_random_sprite_on_event(rom: LocalRom, sprite, local_random, allow_rand
             # Allows random to take the wheel on which events apply. (at least one event will be applied.)
             onevent = local_random.randint(0x0001, 0x003F)
         elif userandomsprites:
-            onevent = 0x01 if 'hit' in sprite else 0x00
-            onevent += 0x02 if 'enter' in sprite else 0x00
-            onevent += 0x04 if 'exit' in sprite else 0x00
-            onevent += 0x08 if 'slash' in sprite else 0x00
-            onevent += 0x10 if 'item' in sprite else 0x00
-            onevent += 0x20 if 'bonk' in sprite else 0x00
+            # Handle both hyphenated and non-hyphenated formats
+            sprite_lower = sprite.lower()
+            onevent = 0x01 if 'hit' in sprite_lower else 0x00
+            onevent += 0x02 if 'enter' in sprite_lower else 0x00
+            onevent += 0x04 if 'exit' in sprite_lower else 0x00
+            onevent += 0x08 if 'slash' in sprite_lower else 0x00
+            onevent += 0x10 if 'item' in sprite_lower else 0x00
+            onevent += 0x20 if 'bonk' in sprite_lower else 0x00
 
         rom.write_int16(0x18637F, onevent)
 
@@ -261,6 +263,7 @@ def apply_random_sprite_on_event(rom: LocalRom, sprite, local_random, allow_rand
                 if isinstance(sprite_pool, str):
                     sprite_pool = sprite_pool.split(':')
                 for spritename in sprite_pool:
+                    spritename = str(spritename)
                     sprite = Sprite(spritename) if os.path.isfile(spritename) else Sprite.get_sprite_from_name(
                         spritename, local_random)
                     if sprite:
@@ -512,6 +515,10 @@ def _populate_sprite_table():
     with sprite_list_lock:
         if not _sprite_table:
             def load_sprite_from_file(file):
+                # Skip .gitignore files
+                if os.path.basename(file) == '.gitignore':
+                    return
+                    
                 sprite = Sprite(file)
                 if sprite.valid:
                     _sprite_table[sprite.name.lower()] = sprite
@@ -1727,6 +1734,9 @@ def patch_rom(multiworld: MultiWorld, rom: LocalRom, player: int, enemized: bool
     rom.write_bytes(0x180215, code)
     rom.hash = code
 
+    sprite = getattr(local_world, 'sprite', None)
+    apply_random_sprite_on_event(rom, sprite, local_random, False, local_world.sprite_pool if local_world else [])
+
     return rom
 
 
@@ -2010,7 +2020,7 @@ def apply_rom_settings(rom, beep, color, quickswap, menuspeed, music: bool, spri
                              (0b00000100 if allowcollect else 0))
 
     apply_random_sprite_on_event(rom, sprite, local_random, allow_random_on_event,
-                                 world.sprite_pool[player] if world else [])
+                                 world.worlds[player].options.sprite_pool if world else [])
 
     if oof is not None:
         apply_oof_sfx(rom, oof)
