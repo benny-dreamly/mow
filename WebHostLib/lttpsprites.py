@@ -40,7 +40,7 @@ def update_sprites_lttp(
         else:
             print("✅ Sprite‐list update finished.")
 
-    input_dir   = user_path("data", "sprites", "alttpr")
+    input_dir   = user_path("data", "sprites", "alttp", "remote")
     base_out    = local_path("WebHostLib", "static", "generated")
     sprites_out = os.path.join(base_out, "sprites")
     os.makedirs(sprites_out, exist_ok=True)
