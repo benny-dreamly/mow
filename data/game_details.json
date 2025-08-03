@@ -2668,6 +2668,41 @@
         ],
         "release_date": 1991
     },
+    "Mega Man 3": {
+        "igdb_id": "1735",
+        "world_name": "Mega Man 3",
+        "igdb_name": "Mega Man III",
+        "us_rating": [
+            "A",
+            "E",
+            "7"
+        ],
+        "player_perspectives": [
+            "Side view"
+        ],
+        "genres": [
+            "Platform",
+            "Shooter"
+        ],
+        "themes": [
+            "Action",
+            "Science fiction"
+        ],
+        "keywords": [
+            "future",
+            "robots",
+            "compilation",
+            "crime",
+            "sequel",
+            "high score",
+            "boss fight",
+            "super game boy enhancement",
+            "virtual console",
+            "film noir",
+            "fictional currencies"
+        ],
+        "release_date": 1992
+    },
     "MegaMan Battle Network 3": {
         "igdb_id": "1758",
         "world_name": "MegaMan Battle Network 3",

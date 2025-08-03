@@ -95,6 +95,7 @@ Currently, the following games are supported:
 * Mario Kart 64
 * Mario & Luigi Superstar Saga
 * Mega Man 2
+* Mega Man 3
 * Mega Man Battle Network 3
 * Mega Man X3
 * Meritous

@@ -63,7 +63,6 @@ from randomizer.Enums.Maps import Maps
 from randomizer.Lists.Warps import BananaportVanilla
 from randomizer.Patching.Library.Generic import IsItemSelected, getProgHintBarrierItem
 from randomizer.Prices import AnyKongCanBuy, CanBuy
-from Items import DK64Item
 
 STARTING_SLAM = 0  # Currently we're assuming you always start with 1 slam
 logic_item_name_to_id = {}

@@ -1,3 +1,4 @@
+import unittest
 from typing import Any
 from collections import Counter
 from dataclasses import fields
@@ -5,7 +6,7 @@ from Options import PerGameCommonOptions
 from .. import options
 from . import CupheadTestBase
 
-class TestOptionNames(CupheadTestBase):
+class TestOptionNames(unittest.TestCase):
     def test_option_names(self):
         common_fieldnames = {f for f in fields(PerGameCommonOptions)}
         option_fields = [f for f in fields(options.CupheadOptions) if f not in common_fieldnames]
@@ -23,6 +24,15 @@ class TestOptions(CupheadTestBase):
         "DLC": {
             "use_dlc": True,
             "mode": "dlc_beat_both",
+        },
+        "Level Shuffle": {
+            "level_shuffle": "enabled"
+        },
+        "Level Shuffle Plane": {
+            "level_shuffle": "plane_separate"
+        },
+        "Weapon Ex": {
+            "weapon_mode": "progressive",
         },
         "No Ability Rando": {
             "randomize_abilities": False,
@@ -81,35 +91,19 @@ class TestOptions(CupheadTestBase):
             "dlc_chalice": "randomized",
             "dlc_cactusgirl_quest": True
         },
-        "Weapon Ex": {
+        "DLC Weapon Ex": {
             "use_dlc": True,
             "weapon_mode": "progressive",
-        }
+        },
+        "DLC Level Shuffle": {
+            "use_dlc": True,
+            "level_shuffle": "enabled"
+        },
+        "DLC Level Shuffle Plane": {
+            "use_dlc": True,
+            "level_shuffle": "plane_separate"
+        },
     }
-
-    def test_default_options(self):
-        option_set_name = "Default Options"
-        test_world = TestOptions()
-        test_world.world_setup()
-        test_world._check_all_items_are_active(option_set_name)
-        test_world._check_all_locations_are_active(option_set_name)
-        print(f"Seed of \"{option_set_name}\": {test_world.multiworld.seed}")
-        test_world.test_fill()
-
-    def test_options(self):
-        for option_set, opts in self.option_dict.items():
-            with self.subTest(option_set):
-                test_world = TestOptions()
-                test_world.options = opts
-                test_world.world_setup()
-                test_world._check_all_items_are_active(option_set)
-                test_world._check_all_locations_are_active(option_set)
-                print(f"Seed of \"{option_set}\": {test_world.multiworld.seed}")
-                test_world.test_fill()
-                test_world.world_setup()
-                test_world.test_empty_state_can_reach_something()
-                test_world.world_setup()
-                test_world.test_all_state_can_reach_everything()
 
     def _check_all_items_are_active(self, option_set_name: str):
         game_players = set(self.multiworld.get_game_players(self.game))
@@ -135,3 +129,28 @@ class TestOptions(CupheadTestBase):
                     remaining_locs.remove(loc.name)
             assert len(remaining_locs) == 0, \
                 f"{option_set_name}: The following locations are active but have not been created: {remaining_locs}"
+
+    def test_default_options(self):
+        option_set_name = "Default Options"
+        test_world = TestOptions()
+        test_world.world_setup()
+        test_world._check_all_items_are_active(option_set_name)
+        test_world._check_all_locations_are_active(option_set_name)
+        print(f"Seed of \"{option_set_name}\": {test_world.multiworld.seed}")
+        test_world.test_fill()
+
+    def test_options(self):
+        for option_set, opts in self.option_dict.items():
+            with self.subTest(option_set):
+                test_world = TestOptions()
+                test_world.options = opts
+                test_world.world_setup()
+                test_world._check_all_items_are_active(option_set)
+                test_world._check_all_locations_are_active(option_set)
+                print(f"Seed of \"{option_set}\": {test_world.multiworld.seed}")
+                test_world.test_fill()
+                test_world.world_setup()
+                test_world.test_empty_state_can_reach_something()
+                test_world.world_setup()
+                test_world.test_all_state_can_reach_everything()
+
