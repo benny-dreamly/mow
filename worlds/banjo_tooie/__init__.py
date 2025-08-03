@@ -59,13 +59,13 @@ class BanjoTooieSettings(settings.Group):
 #NOTE! For Backward Compatability, don't use type str|None. multi types not allowed on older Pythons
 class BanjoTooieWeb(WebWorld):
     setup_en = Tutorial("Setup Banjo-Tooie",
-        """A guide to setting up Archipelago Banjo-Tooie on your computer.""",
+        """A guide to setting up MultiworldGG Banjo-Tooie on your computer.""",
         "English",
         "setup_en.md",
         "setup/en",
         ["Beebaleen"])
     setup_fr = Tutorial("Setup Banjo-Tooie",
-        """A guide to setting up Archipelago Banjo-Tooie on your computer.""",
+        """A guide to setting up MultiworldGG Banjo-Tooie on your computer.""",
         "French",
         "setup_fr.md",
         "setup/fr",

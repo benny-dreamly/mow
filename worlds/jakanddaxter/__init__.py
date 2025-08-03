@@ -86,7 +86,7 @@ class JakAndDaxterSettings(settings.Group):
 class JakAndDaxterWebWorld(WebWorld):
     setup_en = Tutorial(
         "Multiworld Setup Guide",
-        "A guide to setting up ArchipelaGOAL (Archipelago on OpenGOAL).",
+        "A guide to setting up ArchipelaGOAL (Jak & Dexter for MWGG on OpenGOAL).",
         "English",
         "setup_en.md",
         "setup/en",

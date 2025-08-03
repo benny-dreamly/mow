@@ -57,7 +57,7 @@ class Wargroove2Settings(settings.Group):
 class Wargroove2Web(WebWorld):
     tutorials = [Tutorial(
         "Multiworld Setup Guide",
-        "A guide to setting up Wargroove 2 for Archipelago.",
+        "A guide to setting up Wargroove 2 for MultiworldGG.",
         "English",
         "wargroove2_en.md",
         "wargroove2/en",

@@ -44,8 +44,8 @@ class EBWeb(WebWorld):
 
     setup_en = Tutorial(
         "Multiworld Setup Guide",
-        "A guide to setting up the EarthBound randomizer"
-        "and connecting to an Archipelago server.",
+        "A guide to setting up the EarthBound randomizer "
+        "and connecting to a MultiworldGG server.",
         "English",
         "setup_en.md",
         "setup/en",

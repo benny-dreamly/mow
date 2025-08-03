@@ -38,7 +38,7 @@ To connect to the multiworld server, run the **Lego Star Wars: The Complete Saga
 and connect it to the MultiworldGG server. Lego Star Wars: The Complete Saga must be running before a connection can be
 made.
 
-The first time a save file connects to an MultiworldGG server, the slot name needs to be entered. After that, the slot
+The first time a save file connects to a MultiworldGG server, the slot name needs to be entered. After that, the slot
 name will be set into the save data and read automatically from the save file by the client when connecting.
 
 An in-game message will be displayed when the client is fully connected and running.

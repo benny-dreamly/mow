@@ -21,6 +21,10 @@ class HuniePopWeb(WebWorld):
 
 
 class HuniePop(World):
+    """
+    HuniePop is a unique sim experience around 8 girls.
+    It's a gameplay first approach that's part dating sim, part puzzle game, with light RPG elements.
+    """
     game = "Hunie Pop"
     author: str = "dotsofdarkness"
     worldversion = {

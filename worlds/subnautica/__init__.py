@@ -16,7 +16,7 @@ from .rules import set_rules
 class SubnauticaWeb(WebWorld):
     tutorials = [Tutorial(
         "Multiworld Setup Guide",
-        "A guide to setting up the Subnautica randomizer connected to an MultiworldGG Multiworld",
+        "A guide to setting up the Subnautica randomizer connected to a MultiworldGG Multiworld",
         "English",
         "setup_en.md",
         "setup/en",
@@ -42,7 +42,7 @@ class SubnauticaWorld(World):
     location_name_to_id = all_locations
     options_dataclass = options.SubnauticaOptions
     options: options.SubnauticaOptions
-    required_client_version = (0, 5, 0)
+    required_client_version = (0, 6, 2)
     origin_region_name = "Planet 4546B"
     creatures_to_scan: List[str]
 
@@ -156,6 +156,7 @@ class SubnauticaWorld(World):
             "creatures_to_scan": self.creatures_to_scan,
             "death_link": self.options.death_link.value,
             "free_samples": self.options.free_samples.value,
+            "empty_tanks": self.options.empty_tanks.value,
         }
 
         return slot_data

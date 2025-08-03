@@ -16,7 +16,7 @@ from .rules import CandyBox2RulesPackage, generate_rules_package
 class CandyBox2WebWorld(WebWorld):
     tutorials = [Tutorial(
         "Multiworld Setup Guide",
-        "A guide to setting up Candy Box 2 for Archipelago.",
+        "A guide to setting up Candy Box 2 for MultiworldGG.",
         "English",
         "guide_en.md",
         "guide/en",

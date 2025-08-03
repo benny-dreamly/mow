@@ -270,7 +270,7 @@ def is_correct_forge(forge_dir) -> bool:
 if __name__ == '__main__':
     Utils.init_logging("MinecraftClient")
     parser = argparse.ArgumentParser()
-    parser.add_argument("apmc_file", default=None, nargs='?', help="Path to an MultiworldGG Minecraft data file (.apmc)")
+    parser.add_argument("apmc_file", default=None, nargs='?', help="Path to a MultiworldGG Minecraft data file (.apmc)")
     parser.add_argument('--install', '-i', dest='install', default=False, action='store_true',
                         help="Download and install Java and the Forge server. Does not launch the client afterwards.")
     parser.add_argument('--release_channel', '-r', dest="channel", type=str, action='store',
