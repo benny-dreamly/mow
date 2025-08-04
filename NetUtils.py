@@ -224,6 +224,14 @@ class JSONtoTextParser(metaclass=HandlerMeta):
         "black": "000000",
         "red": "FF0000", #red
         "green": "00FF00", #green
+        "yellow": "FAFAD2",
+        "blue": "6495ED",
+        "magenta": "EE00EE",
+        "cyan": "00EEEE",
+        "slateblue": "6D8BE8",
+        "plum": "AF99EF",
+        "salmon": "FA8072",
+        "white": "FFFFFF",
         "orange": "FF7700", #added individually to assure compat with Jak&Dexter
         "notfoundcolor": "EE0000", #red
         "foundcolor": "00c51b", #green
