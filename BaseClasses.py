@@ -1917,13 +1917,13 @@ class Spoiler:
 class Tutorial(NamedTuple):
     """Class to build website tutorial pages from a .md file in the world's /docs folder. Order is as follows.
     Name of the tutorial as it will appear on the site. Concise description covering what the guide will entail.
-    Language the guide is written in. Name of the file ex 'setup_en.md'. Name of the link on the site; game name is
-    filled automatically so 'setup/en' etc. Author or authors."""
+    Language the guide is written in. Name of the file ex 'setup_en.md'. Legacy link format for backward compatibility
+    (e.g., 'setup/en'). Author or authors."""
     tutorial_name: str
     description: str
     language: str
     file_name: str
-    link: str  # unused
+    link: str  # Legacy link format for backward compatibility
     authors: List[str]
 
 

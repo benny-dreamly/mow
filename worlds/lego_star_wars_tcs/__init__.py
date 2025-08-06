@@ -78,7 +78,7 @@ class LegoStarWarsTCSWebWorld(WebWorld):
         "Multiworld Setup Guide",
         "A guide for setting up Lego Star Wars: The Complete Saga to be played in MultiworldGG.",
         "English",
-        "lsw_tcs_en.md",
+        "setup_en.md",
         "setup/en",
         ["Mysteryem"]
     )]

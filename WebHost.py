@@ -52,7 +52,7 @@ def get_app() -> "Flask":
     return app
 
 
-def copy_tutorials_files_to_static() -> None:
+def copy_tutorials_files_to_static(app=None) -> None:
     import shutil
     import zipfile
     from werkzeug.utils import secure_filename
@@ -62,8 +62,9 @@ def copy_tutorials_files_to_static() -> None:
     from worlds.AutoWorld import AutoWorldRegister
     worlds = {}
     for game, world in AutoWorldRegister.world_types.items():
-        if hasattr(world.web, 'tutorials') and (not world.hidden or game == 'Archipelago') and (not game in app.config["HIDDEN_WEBWORLDS"]):
-            worlds[game] = world
+        if hasattr(world.web, 'tutorials') and (not world.hidden or game == 'Archipelago'):
+            if app is None:
+                worlds[game] = world
 
     base_target_path = Utils.local_path("WebHostLib", "static", "generated", "docs")
     shutil.rmtree(base_target_path, ignore_errors=True)
@@ -108,7 +109,7 @@ if __name__ == "__main__":
         logging.warning("Could not update LttP sprites: %s", e)
     app = get_app()
     create_options_files()
-    copy_tutorials_files_to_static()
+    copy_tutorials_files_to_static(app)
     if app.config["SELFLAUNCH"]:
         autohost(app.config)
     if app.config["SELFGEN"]:

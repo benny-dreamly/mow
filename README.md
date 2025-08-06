@@ -44,6 +44,7 @@ Currently, the following games are supported:
 * Castlevania 64
 * Castlevania: Curse of the Moon
 * Castlevania: Sympfony of the Night
+* Crystal Project
 * Dark Souls II
 * Dark Souls III
 * Dark Souls Remastered

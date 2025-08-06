@@ -942,6 +942,47 @@
         "keywords": [],
         "release_date": 2021
     },
+    "Crystal Project": {
+        "igdb_id": "181444",
+        "world_name": "Crystal Project",
+        "igdb_name": "Crystal Project",
+        "us_rating": [
+            "E10+"
+        ],
+        "player_perspectives": [
+            "Third person",
+            "Bird view / Isometric"
+        ],
+        "genres": [
+            "Platform",
+            "Role-playing (RPG)",
+            "Adventure",
+            "Strategy",
+            "Turn-based strategy (TBS)",
+            "Indie",
+            "Tactical"
+        ],
+        "themes": [
+            "Fantasy",
+            "Mystery"
+        ],
+        "keywords": [
+            "character customization",
+            "3d",
+            "metroidvania",
+            "jrpg",
+            "voxel",
+            "class-based",
+            "atmospheric",
+            "pixel graphics",
+            "non-linear",
+            "party-based",
+            "turn-based combat",
+            "collectathon",
+            "party-based rpg"
+        ],
+        "release_date": 2022
+    },
     "Dark Souls II": {
         "igdb_id": "2368",
         "world_name": "Dark Souls II",

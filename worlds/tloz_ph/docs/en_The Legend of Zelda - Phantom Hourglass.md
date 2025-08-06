@@ -80,4 +80,4 @@ Since most locked doors in TotOK re-lock themselves each time you enter, TotOK h
 * The grappling hook can be used to skip a key on B3. This is in logic.
 
 ### My sword disappeared
-This is an annoyng bug that i can't seem to track down, I'm adding a symptomatic fix in the next update until i figure out what causes it. if you want a bad backup to get your sword back, open the memory editor in bizhawk, find address `0x1BA644` in `Main RAM` and use the poke tool to add `1` to it, then save and quit.
+This is an annoying bug that i can't seem to track down, I'm adding a symptomatic fix in the next update until i figure out what causes it. if you want a bad backup to get your sword back, open the memory editor in bizhawk, find address `0x1BA644` in `Main RAM` and use the poke tool to add `1` to it, then save and quit.

@@ -134,6 +134,44 @@ def tutorial(game: str, file: str):
         return abort(404)
 
 
+@app.route('/tutorial/<string:game>/<string:link>/<string:lang>')
+@cache.cached()
+def tutorial_legacy(game: str, link: str, lang: str):
+    """Legacy route to support old link-based tutorial URLs like /tutorial/game/setup/en"""
+    try:
+        theme = get_world_theme(game)
+        secure_game_name = secure_filename(game)
+        
+        # Find the tutorial that matches the old link format
+        from worlds.AutoWorld import AutoWorldRegister
+        world_type = AutoWorldRegister.world_types.get(game)
+        if not world_type or not hasattr(world_type.web, 'tutorials'):
+            return abort(404)
+        
+        # Look for a tutorial with matching link and language
+        target_file = None
+        for tutorial in world_type.web.tutorials:
+            if tutorial.link == f"{link}/{lang}":
+                target_file = tutorial.file_name.rsplit(".", 1)[0]  # Remove .md extension
+                break
+        
+        if not target_file:
+            return abort(404)
+        
+        document = render_markdown(os.path.join(
+            app.static_folder, "generated", "docs",
+            secure_game_name, target_file+".md"
+        ))
+        return render_template(
+            "markdown_document.html",
+            title=f"{game} Guide",
+            html_from_markdown=document,
+            theme=theme,
+        )
+    except FileNotFoundError:
+        return abort(404)
+
+
 @app.route('/tutorial/')
 @cache.cached()
 def tutorial_landing():
@@ -150,10 +188,19 @@ def tutorial_landing():
             for tutorial in world_type.web.tutorials:
                 current_tutorial = current_world.setdefault(tutorial.tutorial_name, {
                     "description": tutorial.description, "files": {}})
-                current_tutorial["files"][secure_filename(tutorial.file_name).rsplit(".", 1)[0]] = {
+                
+                # Get the file name without extension for the new format
+                file_key = secure_filename(tutorial.file_name).rsplit(".", 1)[0]
+                
+                # Create file data with both old and new link formats
+                file_data = {
                     "authors": tutorial.authors,
-                    "language": tutorial.language
+                    "language": tutorial.language,
+                    "file_name": file_key,
+                    "legacy_link": tutorial.link if tutorial.link != "unused" else None
                 }
+                
+                current_tutorial["files"][file_key] = file_data
     tutorials = {world_name: tutorials for world_name, tutorials in title_sorted(
         tutorials.items(), key=lambda element: "\x00" if element[0] == "Archipelago" else (getattr(visible_worlds[element[0]].web, 'display_name', None) or visible_worlds[element[0]].game))}
     

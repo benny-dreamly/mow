@@ -5,6 +5,7 @@ from typing import TextIO, Dict
 from BaseClasses import CollectionState, Tutorial, MultiWorld
 from entrance_rando import ERPlacementState
 from worlds.AutoWorld import World, WebWorld
+from .component import setup_candy_box_2_component
 from .expected_client_version import EXPECTED_CLIENT_VERSION
 from .locations import location_descriptions, locations, CandyBox2LocationName
 from .items import items, CandyBox2Item, candy_box_2_base_id, filler_items, CandyBox2ItemName
@@ -45,6 +46,7 @@ class CandyBox2World(World):
     progressive_jump: bool
     grimoires: int
     pains_au_chocolat: int
+    font_traps: int
 
     entrance_randomisation: ERPlacementState = None
     original_entrances: list[tuple[str, str]]
@@ -79,6 +81,7 @@ class CandyBox2World(World):
         self.progressive_jump = self.multiworld.re_gen_passthrough["Candy Box 2"]["defaults"]["progressiveJump"] if self.is_ut_regen() else self.options.progressive_jump.value
         self.grimoires = self.multiworld.re_gen_passthrough["Candy Box 2"]["defaults"]["grimoires"] if self.is_ut_regen() else self.options.grimoires.value
         self.pains_au_chocolat = self.multiworld.re_gen_passthrough["Candy Box 2"]["defaults"]["painsAuChocolat"] if self.is_ut_regen() else self.options.pain_au_chocolat_count.value
+        self.font_traps = self.multiworld.re_gen_passthrough["Candy Box 2"]["defaults"]["fontTraps"] if self.is_ut_regen() else self.options.font_traps.value
 
     def create_regions(self) -> None:
         return create_regions(self)
@@ -134,6 +137,7 @@ class CandyBox2World(World):
                 "progressiveJump": self.options.progressive_jump.value,
                 "grimoires": self.options.grimoires.value,
                 "painsAuChocolat": self.options.pain_au_chocolat_count.value,
+                "fontTraps": self.options.font_traps.value,
             }
         }
 
@@ -169,3 +173,5 @@ class CandyBox2World(World):
                 er_hint_data[location.address] = entrance_friendly_names[entrance]
 
         hint_data[self.player] = er_hint_data
+
+setup_candy_box_2_component()

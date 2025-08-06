@@ -125,7 +125,7 @@ ITEMS_DATA = {
         "progressive": [(0x1ba646, 0x10), (0x1ba646, 0x80), (0x1ba647, 0x4)],
         "id": 14,
     },
-    "Spirit of Courage (White)": {  # Used to remove spirit from Temple of Courage
+    "Spirit of Courage White": {  # Used to remove spirit from Temple of Courage
         "classification": ItemClassification.progression,
         "address": 0x1BA647,
         "value": 0x20,
@@ -673,7 +673,7 @@ ITEMS_DATA = {
     "Treasure Map #24 (Ruins W)": {
         "classification": ItemClassification.progression_skip_balancing,
         "address": 0x1ba653,
-        "value": 0x20,
+        "value": 0x2,
         "id": 90,
         "hint_on_receive": ["Ocean NE Salvage #24 Ruins W"],
     },
@@ -687,7 +687,7 @@ ITEMS_DATA = {
     "Treasure Map #26 (Ruins SW)": {
         "classification": ItemClassification.progression_skip_balancing,
         "address": 0x1ba653,
-        "value": 0x2,
+        "value": 0x20,
         "id": 92,
         "hint_on_receive": ["Ocean NE Salvage #26 Ruins SW"],
     },
