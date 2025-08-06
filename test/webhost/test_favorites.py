@@ -104,6 +104,19 @@ class TestFavoritesFeature(TestBase):
         self.assertIn('favoriteItems', js_content)
         self.assertIn('favorite-game-item', js_content)
 
+    def test_search_cleared_when_favoriting(self):
+        """Test that search bar is cleared when adding a new favorite"""
+        js_file_path = 'WebHostLib/static/assets/supportedGames.js'
+        
+        with open(js_file_path, 'r', encoding='utf-8') as f:
+            js_content = f.read()
+        
+        # Check for search clearing functionality when favoriting
+        self.assertIn('wasFavorited', js_content)
+        self.assertIn('gameSearch.value = \'\'', js_content)
+        self.assertIn('dispatchEvent', js_content)
+        self.assertIn('new Event(\'input\')', js_content)
+
 
 if __name__ == '__main__':
     unittest.main() 

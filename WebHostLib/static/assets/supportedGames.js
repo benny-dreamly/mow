@@ -43,7 +43,9 @@ window.addEventListener('load', () => {
 
   // Toggle favorite status
   function toggleFavorite(gameName) {
-    if (favoriteGames.has(gameName)) {
+    const wasFavorited = favoriteGames.has(gameName);
+    
+    if (wasFavorited) {
       favoriteGames.delete(gameName);
     } else {
       favoriteGames.add(gameName);
@@ -51,6 +53,16 @@ window.addEventListener('load', () => {
     saveFavorites();
     updateFavoritesSection();
     updateMainListVisibility();
+    
+    // Clear search bar when adding a new favorite
+    if (!wasFavorited) {
+      const gameSearch = document.getElementById('game-search');
+      if (gameSearch) {
+        gameSearch.value = '';
+        // Trigger the search input event to update visibility
+        gameSearch.dispatchEvent(new Event('input'));
+      }
+    }
   }
 
   // Update the favorites section
@@ -70,7 +82,20 @@ window.addEventListener('load', () => {
     favoritesSection.style.display = 'block';
     favoritesList.innerHTML = '';
 
-    favoriteGames.forEach(gameName => {
+    // Sort favorites alphabetically by display name
+    const sortedFavorites = Array.from(favoriteGames).sort((a, b) => {
+      const elementA = originalElements.get(a);
+      const elementB = originalElements.get(b);
+      
+      if (!elementA || !elementB) return 0;
+      
+      const displayNameA = elementA.getAttribute('data-display-name') || a;
+      const displayNameB = elementB.getAttribute('data-display-name') || b;
+      
+      return displayNameA.toLowerCase().localeCompare(displayNameB.toLowerCase());
+    });
+
+    sortedFavorites.forEach(gameName => {
       // Get the original element from our stored map
       const originalElement = originalElements.get(gameName);
       if (!originalElement) return;
@@ -166,6 +191,9 @@ window.addEventListener('load', () => {
         item.style.display = null;
         item.removeAttribute('open');
       });
+      
+      // Re-apply favorites visibility logic after clearing search
+      updateMainListVisibility();
       return;
     }
 
