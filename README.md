@@ -124,6 +124,7 @@ Currently, the following games are supported:
 * Pokémon Red/Blue
 * Powerwash Simulator
 * Pseudoregalia
+* Quake 1
 * Raft
 * Ratchet & Clank 2
 * Resident Evil 2 Remake

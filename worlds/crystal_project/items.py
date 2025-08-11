@@ -41,6 +41,7 @@ item_index_offset = 101
 equipment_index_offset = 1001
 summon_index_offset = 10001
 scholar_index_offset = 100001
+trap_index_offset = 1000001
 
 item_table: Dict[str, ItemData] = {
     #Jobs
@@ -1064,6 +1065,18 @@ item_table: Dict[str, ItemData] = {
     OVERlOAD: ItemData(SCHOLAR_ABILITY, 365 + scholar_index_offset, ItemClassification.useful, 0, 1),
     REFLECTION: ItemData(SCHOLAR_ABILITY, 366 + scholar_index_offset, ItemClassification.useful, 0, 1),
     LIFEGIVER: ItemData(SCHOLAR_ABILITY, 376 + scholar_index_offset, ItemClassification.useful, 0, 1),
+
+    #Traps
+    "Trap - Dialog Trap": ItemData(TRAP, 1 + trap_index_offset, ItemClassification.trap, 0),
+    "Trap - Crag Demon Trap": ItemData(TRAP, 2 + trap_index_offset, ItemClassification.trap, 0),
+    "Trap - Clothes Fall Off Trap": ItemData(TRAP, 3 + trap_index_offset, ItemClassification.trap, 0),
+    "Trap - Oregon Trap": ItemData(TRAP, 4 + trap_index_offset, ItemClassification.trap, 0),
+    "Trap - Teleport Trap": ItemData(TRAP, 5 + trap_index_offset, ItemClassification.trap, 0),
+    "Trap - Moon Jump Trap": ItemData(TRAP, 6 + trap_index_offset, ItemClassification.trap, 0),
+    "Trap - Snail Jump Trap": ItemData(TRAP, 7 + trap_index_offset, ItemClassification.trap, 0),
+    "Trap - Dismount Trap": ItemData(TRAP, 8 + trap_index_offset, ItemClassification.trap, 0),
+    "Trap - Dunk Tank Trap": ItemData(TRAP, 9 + trap_index_offset, ItemClassification.trap, 0),
+    "Trap - Trap Pack Trap": ItemData(TRAP, 10 + trap_index_offset, ItemClassification.trap, 0),
 }
 
 progressive_equipment: Tuple[str, ...] = (

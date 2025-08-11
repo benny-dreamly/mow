@@ -1698,11 +1698,11 @@ def ph_totok_b3_nw(state, player):
     return ph_totok_has_floor_time(state, player, 3, 5)
 
 
-def ph_totok_b3_sw(state, player):
+def ph_totok_b3_se(state, player):
     return ph_totok_has_floor_time(state, player, 3, 10)
 
 
-def ph_totok_b3_se(state, player):
+def ph_totok_b3_sw(state, player):
     return all([
         ph_totok_has_floor_time(state, player, 3, 7),
         any([

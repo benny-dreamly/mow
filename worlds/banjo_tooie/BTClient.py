@@ -20,8 +20,9 @@ from CommonClient import CommonContext, server_loop, gui_enabled, \
     ClientCommandProcessor, logger, get_base_parser
 import Utils
 import settings
-from Utils import async_start
+from Utils import async_start, instance_name
 from worlds import network_data_package
+apname = instance_name if instance_name else "Archipelago"
 
 SYSTEM_MESSAGE_ID = 0
 
@@ -64,8 +65,8 @@ deathlink_sent_this_death: we interacted with the multiworld on this death, wait
 bt_loc_name_to_id = network_data_package["games"]["Banjo-Tooie"]["location_name_to_id"]
 bt_itm_name_to_id = network_data_package["games"]["Banjo-Tooie"]["item_name_to_id"]
 script_version: int = 5
-version: str = "V4.8"
-patch_md5: str = "29c4336d410887ee7fe2d92633e8888a"
+version: str = "V4.8.1"
+patch_md5: str = "a739acb3e19d2d1be919ab6cd9aa372a"
 bt_options = settings.get_settings().banjo_tooie_options
 program = None
 
@@ -415,7 +416,7 @@ class BanjoTooieContext(CommonContext):
             logging_pairs = [
                 ("Client", "Archipelago")
             ]
-            base_title = "Banjo-Tooie Client "+ version + " for AP"
+            base_title = f"Banjo-Tooie Client "+ version + " for {apname}"
 
             def build(self):
                 ret = super().build()
@@ -1145,7 +1146,7 @@ async def n64_sync_task(ctx: BanjoTooieContext):
                         if not ctx.version_warning:
                             logger.warning(f"Your Lua script is version {reported_version}, expected {script_version}. "
                                 "Please update to the latest version. "
-                                "Your connection to the Archipelago server will not be accepted.")
+                                f"Your connection to the {apname} server will not be accepted.")
                             ctx.version_warning = True
                 except asyncio.TimeoutError:
                     logger.debug("Read Timed Out, Reconnecting")

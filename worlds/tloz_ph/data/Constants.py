@@ -61,8 +61,7 @@ STARTING_FLAGS = [
     [0x1BA6BE, 0x01],
     [0x1BA6C4, 0x01],
     [0x1BA6C8, 0x01],
-    # Starting items, boomerang + PH
-    [0x1BA644, 0x04],
+    # Starting items, Phantom Hourglass
     [0x1BA648, 0x01],
     # Show treasure/ship part prices
     [0x1BA658, 0xFF],

@@ -15,11 +15,11 @@ If you want to help make a randomizer that's fully integrated into the game, vis
 This is a spiritual successor to my discontinued [Manual for Phantom Hourglass](https://github.com/carrotinator/manual_phantomhourglass_carrot). It covers the full game but you've got to do all the memory editing manually.
 
 ## Who made this?
-This version of the randomizer was made by me, Carrotinator. But it wouldn't have been possible without the work of many that came before. Here are some of them:
+This version of the randomizer was made by me, Carrotinator. The method making the item menu appear after getting an item was writen by CelestalKitsune. But it wouldn't have been possible without the work of many that came before. Here are some of them:
  * The Phantom Hourglass [Decomp Project](https://github.com/AetiasHax/ph), and especially: 
    * Aetias for making an inventory editing script while playing the manual rando for PH I made previously. This spawned the idea for using the generic bizhawk connector to do everything, and look where that got us
    * Everyone who worked on the [PH dev spreadsheet](https://docs.google.com/spreadsheets/d/1_4Bo1IxLDtaytXj7SQFIAtt9QbPfYDTGZ-CDNf0DXJA/edit?gid=0#gid=0), but especially SammyGoodTunes, for updating the dev spreadsheets memory addresses live while I was working on this. I wouldn't have been able to do anything without the documentation in the spreadsheet.
- * The [Phantom Hourglass Randomizer](https://github.com/phst-randomizer/ph-randomizer)
+ * The standalone [Phantom Hourglass Randomizer](https://github.com/phst-randomizer/ph-randomizer)
  * Dinopony, whose [Archipelago implementation for Zelda: Oracle of Seasons](https://github.com/Dinopony/ArchipelagoOoS/releases) I used as a starting point and a reference for how to make an Archipelago client using the bizhawk tools. And for making their code easy to understand!
  * The Manual for Archipelago discord, for lowering the entry threshold to Archipelago development.
  * Everyone who worked on Archipelago as a whole, for upholding high standards in code readability, and for creating such an amazing system.
@@ -79,8 +79,6 @@ Since most locked doors in TotOK re-lock themselves each time you enter, TotOK h
 * When you enter the dungeon, you start with as many TotOK small keys as you've found so far
 * If you've opened the locked door on 1F that stays *permanently* unlocked, you don't get that key back. Logic assumes you can permanently lose that key, so you can safely open the 1F door unless you wanna go out of logic.
 * When you reach the midway room with the yellow warp, it saves the number of keys you still have. When you take the yellow warp you should start with however many keys you saved.
+* Finding more TotOK small keys after reaching the yellow midway will add them to the number of keys you get both at the start of the dungeon and from the midway.
 * Logic can expect you to restart from the beginning to use your keys differently.
 * The grappling hook can be used to skip a key on B3. This is in logic.
-
-### My sword disappeared
-This is an annoyng bug that i can't seem to track down, I'm adding a symptomatic fix in the next update until i figure out what causes it. if you want a bad backup to get your sword back, open the memory editor in bizhawk, find address `0x1BA644` in `Main RAM` and use the poke tool to add `1` to it, then save and quit.

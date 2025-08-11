@@ -3509,6 +3509,49 @@
         ],
         "release_date": 2023
     },
+    "Quake": {
+        "igdb_id": "333",
+        "world_name": "Quake 1",
+        "igdb_name": "Quake",
+        "us_rating": [],
+        "player_perspectives": [
+            "First person"
+        ],
+        "genres": [
+            "Shooter"
+        ],
+        "themes": [
+            "Action",
+            "Science fiction",
+            "Horror",
+            "Historical",
+            "Comedy"
+        ],
+        "keywords": [
+            "aliens",
+            "arena",
+            "bloody",
+            "medieval",
+            "pvp",
+            "death",
+            "voxel",
+            "open-source",
+            "run and gun",
+            "steam",
+            "backtracking",
+            "lovecraftian",
+            "gore",
+            "shareware",
+            "portals",
+            "arena shooter",
+            "capture the flag",
+            "castle",
+            "silent protagonist",
+            "swimming",
+            "one-man army"
+        ],
+        "release_date": 1996
+    },
     "Ratchet & Clank 2": {
         "igdb_id": "1770",
         "world_name": "Ratchet & Clank 2",

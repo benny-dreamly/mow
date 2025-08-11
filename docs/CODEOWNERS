@@ -354,6 +354,9 @@
 # Pseudoregalia 
 /worlds/pseudoregalia/ @qwint
 
+# Quake 1
+/worlds/quake/ @randomcodegen
+
 # Raft
 /worlds/raft/ @SunnyBat
 

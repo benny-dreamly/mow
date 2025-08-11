@@ -41,9 +41,9 @@ class CrystalProjectWeb(WebWorld):
 
 class CrystalProjectWorld(World):
     """Crystal Project is a mix of old school job based jRPG mixed with a ton of 3D platforming and exploration."""
-    apworld_version = "0.8.0"
-    author: str = "Emerassi"
+    apworld_version = "0.9.0"
     game = "Crystal Project"
+    author: str = "Emerassi"
     options_dataclass = CrystalProjectOptions
     options: CrystalProjectOptions
     topology_present = True  # show path to required location checks in spoiler
@@ -243,6 +243,7 @@ class CrystalProjectWorld(World):
                 # Generate a collection state that is a copy of the current state but also has all the passes so we can
                 # check what regions we can access without just getting told none because we have no passes
                 all_passes_state: CollectionState = CollectionState(self.multiworld)
+                self.origin_region_name = SPAWNING_MEADOWS
                 for region_pass in self.item_name_groups[PASS]:
                     all_passes_state.collect(self.create_item(region_pass), prevent_sweep=True)
                 for region in self.get_regions():
@@ -255,7 +256,6 @@ class CrystalProjectWorld(World):
             #only push if player doesn't already have the pass from their starting inventory
             if len(starting_passes_list) == 0:
                 self.multiworld.push_precollected(self.create_item(region_name_to_pass_dict[self.starter_region]))
-            self.multiworld.get_region(self.starter_region, self.player).add_exits([MENU])
 
     def create_item(self, name: str) -> Item:
         if name in item_table:
@@ -340,15 +340,12 @@ class CrystalProjectWorld(World):
         return self.random.sample(optional_scholar_abilities, count)
 
     def get_filler_item_name(self) -> str:
-        # traps go here if we have any
-        # trap_chance: int = self.options.trap_chance.value
-        # enabled_traps: List[str] = self.options.traps.value
+        trap_chance: int = self.options.trapLikelihood.value
 
-        # if self.random.random() < (trap_chance / 100) and enabled_traps:
-        #     return self.random.choice(enabled_traps)
-        # else:
-        #     return self.random.choice(filler_items) 
-        return self.random.choice(filler_items)
+        if trap_chance > 0 and self.random.random() < (trap_chance / 100):
+             return self.random.choice(list(self.item_name_groups[TRAP]))
+        else:
+            return self.random.choice(filler_items)
 
     def get_excluded_items(self) -> Set[str]:
         excluded_items: Set[str] = set()
