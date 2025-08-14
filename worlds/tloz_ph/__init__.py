@@ -368,9 +368,10 @@ class PhantomHourglassWorld(World):
             def get_target_groups(group: int) -> list[int]:
                 direction = group & EntranceGroups.DIRECTION_MASK
                 area = group & EntranceGroups.AREA_MASK
-                return [OPPOSITE_ENTRANCE_GROUPS[direction] | area]
+                return list({OPPOSITE_ENTRANCE_GROUPS[direction] | area, area, OPPOSITE_ENTRANCE_GROUPS[direction]})
 
-            groups = {direction | area << 3: get_target_groups(direction | area << 3) for direction in range(1, 4) for area in range(1, 8)}
+            groups = {direction | area << 3: get_target_groups(direction | area << 3) for direction in range(0, 5) for area in range(0, 11)}
+
             self.er_placement_state = entrance_rando.randomize_entrances(self, coupled, groups)
 
     def set_rules(self):

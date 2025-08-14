@@ -385,6 +385,11 @@ def ph_has_beam_sword(state: CollectionState, player: int):
         ph_has_spirit(state, player, "Courage", 2)
     ])
 
+def ph_can_make_phantom_sword(state, player):
+    return all([
+        ph_has_phantom_blade(state, player),
+        ph_has_phantom_hourglass(state, player)
+    ])
 
 def ph_can_hit_spin_switches(state: CollectionState, player: int):
     return any([

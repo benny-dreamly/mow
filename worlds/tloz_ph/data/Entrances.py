@@ -25,7 +25,8 @@ OPPOSITE_ENTRANCE_GROUPS = {
     EntranceGroups.RIGHT: EntranceGroups.LEFT,
     EntranceGroups.LEFT: EntranceGroups.RIGHT,
     EntranceGroups.UP: EntranceGroups.DOWN,
-    EntranceGroups.DOWN: EntranceGroups.UP
+    EntranceGroups.DOWN: EntranceGroups.UP,
+    0: 0
 }
 
 ENTRANCE_DATA = {
@@ -37,7 +38,7 @@ ENTRANCE_DATA = {
     #   "exit_region": str. logic region it leads to in
     #   "coords": tuple[int, int, int]. x, y, z. Where to place link on a continuous transition. y value is also used
     #       to differentiate transitions at different heights
-    #   "additional_boundaries": dict[str: int]. additional coordinate data for continuous boundaries, like "x_max" etc.
+    #   "extra_data": dict[str: int]. additional coordinate data for continuous boundaries, like "x_max" etc.
     #   "type": EntranceGroup. Entrance group entrance type (house, cave, sea etc)
     #   "direction": EntranceGroup. Entrance group direction
     #   "two_way": bool=True. generates a reciprocal entrance, also used for ER generation
@@ -136,7 +137,132 @@ ENTRANCE_DATA = {
         "exit_region": "mercay shop",
         "type": EntranceGroups.HOUSE,
         "direction": EntranceGroups.UP,
-        "two_way": True
+    },
+
+    # =========== Ember Island ================
+    "Ember Port House": {
+        "return_name": "Inside Ember Port House",
+        "entrance": (0xD, 0x0, 0x2),
+        "exit": (0xD, 0xB, 0x0),
+        "entrance_region": "ember port",
+        "exit_region": "ember port house",
+        "type": EntranceGroups.HOUSE,
+        "direction": EntranceGroups.UP,
+    },
+    "Ember Astrid House": {
+        "return_name": "Inside Astrid House",
+        "entrance": (0xD, 0x0, 0x1),
+        "exit": (0xD, 0xA, 0x0),
+        "entrance_region": "ember port",
+        "exit_region": "ember astrid",
+        "type": EntranceGroups.HOUSE,
+        "direction": EntranceGroups.UP,
+    },
+    "Astrid House Stairs": {
+        "return_name": "Astrid Basement",
+        "entrance": (0xD, 0xA, 0x1),
+        "exit": (0xD, 0x14, 0x0),
+        "entrance_region": "ember astrid",
+        "exit_region": "ember astrid basement",
+        "type": EntranceGroups.STAIRS,
+        "direction": EntranceGroups.DOWN,
+    },
+    "Ember Kayo House": {
+        "return_name": "Inside Kayo House",
+        "entrance": (0xD, 0x0, 0x3),
+        "exit": (0xD, 0xC, 0x0),
+        "entrance_region": "ember port",
+        "exit_region": "ember kayo",
+        "type": EntranceGroups.HOUSE,
+        "direction": EntranceGroups.UP,
+    },
+    "Ember West Coast South": {
+        "return_name": "Ember East Coast South",
+        "entrance": (0xD, 0x0, 0xFD),
+        "exit": (0xD, 0x1, 0xFE),
+        "coords": (-4500, -164, 80000),
+        "extra_data": {"z_min": 0},
+        "entrance_region": "ember port",
+        "exit_region": "ember coast east",
+        "type": EntranceGroups.OVERWORLD,
+        "direction": EntranceGroups.RIGHT,
+    },
+    "Ember West Coast North": {
+        "return_name": "Ember East Coast North",
+        "entrance": (0xD, 0x0, 0xFD),
+        "exit": (0xD, 0x1, 0xFE),
+        "coords": (-4500, -164, -85000),
+        "extra_data": {"z_max": 0},
+        "entrance_region": "ember coast north",
+        "exit_region": "ember coast east",
+        "type": EntranceGroups.OVERWORLD,
+        "direction": EntranceGroups.RIGHT,
+    },
+    "Ember West Climb North": {
+        "return_name": "Ember East Climb North",
+        "entrance": (0xD, 0x0, 0xFD),
+        "exit": (0xD, 0x1, 0xFE),
+        "coords": (-4500, 4751, -65000),
+        "extra_data": {"z_max": 0},
+        "entrance_region": "ember port",
+        "exit_region": "ember climb east",
+        "type": EntranceGroups.OVERWORLD,
+        "direction": EntranceGroups.RIGHT,
+    },
+    "Ember West Climb South": {
+        "return_name": "Ember East Climb South",
+        "entrance": (0xD, 0x0, 0xFD),
+        "exit": (0xD, 0x1, 0xFE),
+        "coords": (-4500, 4751, 50000),
+        "extra_data": {"z_min": 0},
+        "entrance_region": "ember climb west",
+        "exit_region": "ember coast east",
+        "type": EntranceGroups.OVERWORLD,
+        "direction": EntranceGroups.RIGHT,
+    },
+    "Ember West Heights North": {
+        "return_name": "Ember East Heights North",
+        "entrance": (0xD, 0x0, 0xFD),
+        "exit": (0xD, 0x1, 0xFE),
+        "coords": (-4500, 9666, -50000),
+        "extra_data": {"z_max": 0},
+        "entrance_region": "ember climb west",
+        "exit_region": "ember outside tof",
+        "type": EntranceGroups.OVERWORLD,
+        "direction": EntranceGroups.RIGHT,
+    },
+    "Ember West Heights South": {
+        "return_name": "Ember East Heights South",
+        "entrance": (0xD, 0x0, 0xFD),
+        "exit": (0xD, 0x1, 0xFE),
+        "coords": (-4500, 9666, 25000),
+        "extra_data": {"z_min": 0},
+        "entrance_region": "ember summit west",
+        "exit_region": "ember outside tof",
+        "type": EntranceGroups.OVERWORLD,
+        "direction": EntranceGroups.RIGHT,
+    },
+    "Ember West Summit North": {
+        "return_name": "Ember East Summit North",
+        "entrance": (0xD, 0x0, 0xFD),
+        "exit": (0xD, 0x1, 0xFE),
+        "coords": (-4500, 14582, -35000),
+        "extra_data": {"z_max": 0},
+        "entrance_region": "ember summit west",
+        "exit_region": "ember summit north",
+        "type": EntranceGroups.OVERWORLD,
+        "direction": EntranceGroups.RIGHT,
+    },
+    "Ember West Summit South": {
+        "return_name": "Ember East Summit South",
+        "entrance": (0xD, 0x0, 0xFD),
+        "exit": (0xD, 0x1, 0xFE),
+        "coords": (-4500, 14582, 8000),
+        "extra_data": {"z_min": 0},
+        "entrance_region": "ember summit west",
+        "exit_region": "ember summit east",
+        "type": EntranceGroups.OVERWORLD,
+        "direction": EntranceGroups.RIGHT,
     },
 
     # "Mercay SE -> Mercay NE": {
@@ -171,12 +297,16 @@ OPPOSITES = {
 }
 
 ENTRANCES = {}
+counter = {}
 i = 0
 for name, data in ENTRANCE_DATA.items():
     ENTRANCES[name] = data
     ENTRANCES[name]["id"] = i
     # print(f"{i} {ENTRANCES[name]['entrance_region']} -> {ENTRANCES[name]['exit_region']}")
     i += 1
+    point = data["entrance_region"] + "<=>" + data ["exit_region"]
+    counter.setdefault(point, 0)
+    counter[point] += 1
 
     if data.get("two_way", True):
         reverse_name = data.get("return_name", f"Unnamed Entrance {i}")
@@ -189,14 +319,19 @@ for name, data in ENTRANCE_DATA.items():
             "two_way": True,
             "type": data["type"],
             "direction": OPPOSITE_ENTRANCE_GROUPS[data["direction"]],
-            "coords": data.get("coords", None)
+            "coords": data.get("coords", None),
         }
+        if "extra_data" in data:
+            reverse_data["extra_data"] = data["extra_data"]
         ENTRANCES[reverse_name] = reverse_data
         # print(f"{i} {ENTRANCES[reverse_name]['entrance_region']} -> {ENTRANCES[reverse_name]['exit_region']}")
         i += 1
+        point = reverse_data["entrance_region"] + "<=>" + reverse_data["exit_region"]
+        counter.setdefault(point, 0)
+        counter[point] += 1
 
 
-
+print({key: value for key, value in counter.items() if value != 1})
 
 
 

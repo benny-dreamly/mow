@@ -152,10 +152,28 @@ REGIONS = [
     "cannon island salvage arm",
     "cannon island dig",
 
-    # Isle of Ember
-    "ember island",
-    "ember island dig",
-    "ember island grapple",
+    # Ember ER
+    "ember port",
+    "ember coast east",
+    "ember coast north",
+    "ember grapple",
+    "ember climb west",
+    "ember outside tof",
+    "ember summit west",
+    "ember summit east",
+
+    "ember astrid",
+    "ember astrid basement",
+    "ember kayo",
+    "ember port house",
+
+    "ember outside tof dig",
+    "ember astrid basement dig",
+    "ember astrid post tof",
+
+    "ember climb east",
+    "ember summit north",
+
 
     # Temple of Fire
     "tof 1f",

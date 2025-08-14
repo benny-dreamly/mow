@@ -141,7 +141,7 @@ async def write_memory_value(ctx, address: int, value: int, domain="Main RAM", i
             write_value = prev | value
         else:
             write_value = value
-        write_value = split_bits(write_value, size)
+    write_value = split_bits(write_value, size)
     print(f"Writing Memory: {hex(address)}, {write_value}, {size}, {domain}, {incr}, {unset}")
     await bizhawk.write(ctx.bizhawk_ctx, [(address, write_value, domain)])
     return write_value
@@ -452,26 +452,38 @@ class PhantomHourglassClient(BizHawkClient):
 
     def generate_er_map(self, ctx):
         # Creates a map from scene to dict of
-        #   detect_exit (stage, scene, entrance, link_y) to er_exit (stage, scene, entrance, link_x | None, link_y, link_z)
+        #   detect_exit (stage, scene, entrance, link_y, extra_data) to er_exit (stage, scene, entrance, link_x | None, link_y, link_z)
         if ctx.slot_data.get("er_pairings", None):
             res = {}
             print(ctx.slot_data["er_pairings"])
             pairings = {int(k): v for k, v in ctx.slot_data["er_pairings"].items()}
             print(f"ER Pairings {pairings}")
+
+            # Loop through entrance data, format data
             for data in ENTRANCES.values():
                 print(f"Generating ER Map for {data['entrance']}")
                 stage, room, entrance = data["entrance"]
                 print(f"link_y  {data.get('coords', [0, None])}")
                 link_coords = data.get("coords", None)
-                link_y = link_coords[1] if link_coords else None
-                detect_data = tuple(list(data["exit"]) + [link_y])  # wow this is stupid
+
+                # Handle extra data
+                extra_data = {"y": link_coords[1]} if link_coords else {}  # Ensure that the y value is always checked
+                extra_data |= data.get("extra_data", {})  # Contains additional boundaries and stuff
+                extra_data = tuple(extra_data.items()) if extra_data else None
+                detect_data = tuple(list(data["exit"]) + [extra_data])  # wow this is stupid
+
+                # Create default dict for scene
                 scene = stage * 0x100 + room
                 res.setdefault(scene, dict())
+
+                # Figure pair from generation
                 if data["id"] in pairings:
                     exit_id = pairings[data["id"]]
                     exit_data = self.entrance_id_to_entrance[exit_id]
                     print(f"Exit data {exit_data}, {exit_id}, detect {detect_data}")
-                    if not detect_data == exit_data:
+
+                    # Don't save vanilla entrances. No fix for continuous cause exit data does not store extra_data
+                    if detect_data[3] is None or detect_data[:2] != exit_data[:2]:
                         res[scene][detect_data] = exit_data
 
             self.er_map = res
@@ -821,12 +833,10 @@ class PhantomHourglassClient(BizHawkClient):
                 logger.info("Warp to start failed, warping from home scene")
 
         elif self.er_in_scene:
-            link_y = await read_memory_value(ctx, 0x1B2ECC, signed=True, size=4) if entrance > 0xF0 else None
-            true_going_to = ((going_to & 0xFF00)//0x100, going_to & 0xFF, entrance, link_y)
-            print("True Going To", true_going_to)
-            if true_going_to in self.er_in_scene:
-                exit_stage, exit_room, exit_entrance, *exit_coords = self.er_in_scene[true_going_to]
-                write_list += [(RAM_ADDRS["stage"][0], split_bits(exit_stage, 4), "Main RAM"),
+
+            def write_er(exit_data):
+                exit_stage, exit_room, exit_entrance, *exit_coords = exit_data
+                write_res = [(RAM_ADDRS["stage"][0], split_bits(exit_stage, 4), "Main RAM"),
                                (RAM_ADDRS["room"][0], split_bits(exit_room, 1), "Main RAM"),
                                (RAM_ADDRS["floor"][0], split_bits(0, 4), "Main RAM"),
                                (RAM_ADDRS["entrance"][0], split_bits(exit_entrance, 1), "Main RAM")]
@@ -835,9 +845,35 @@ class PhantomHourglassClient(BizHawkClient):
                     print(f"exit coords {x} {y} {z}")
                     self.er_exit_coord_writes = [(0x1B2EC8, split_bits(x, 4), "Main RAM"),
                                                  (0x1B2ECC, split_bits(y, 4), "Main RAM"),
-                                                 (0x1B2ED0, split_bits(z, 4), "Main RAM"),]
+                                                 (0x1B2ED0, split_bits(z, 4), "Main RAM")]
 
-                res = exit_stage * 0x100 + exit_room
+                return write_res
+
+            # If not a continuous boundary
+            true_going_to = ((going_to & 0xFF00) // 0x100, going_to & 0xFF, entrance, None)
+            if entrance < 0xF0:
+                print("True Going To", true_going_to)
+                if true_going_to in self.er_in_scene:
+                    write_list += write_er(self.er_in_scene[true_going_to])
+                    stage, room, *_ = self.er_in_scene[true_going_to]
+                    res = stage * 0x100 + room
+            else:
+                coords = await self.get_coords(ctx, False)
+                for detect_data, exit_data in self.er_in_scene.items():
+                    if detect_data[3] and detect_data[:2] == true_going_to[:2]:
+                        # Do location comparison
+                        extra_data = {key: value for key, value in list(detect_data[3])}
+                        print(f"Extra data: {extra_data} from {list(detect_data[3])}")
+                        y = extra_data.get("y", coords["y"]-164)
+                        x_max = extra_data.get("x_max", 0x8FFFFFFF)
+                        x_min = extra_data.get("x_min", -0x8FFFFFFF)
+                        z_max = extra_data.get("z_max", 0x8FFFFFFF)
+                        z_min = extra_data.get("z_min", -0x8FFFFFFF)
+
+                        if coords["y"] - 164 == y and x_max > coords["x"] > x_min and z_max > coords["z"] > z_min:
+                            write_list += write_er(exit_data)
+                            stage, room, *_ = exit_data
+                            res = stage * 0x100 + room
 
         if write_list:
             await bizhawk.write(ctx.bizhawk_ctx, write_list)
@@ -1566,7 +1602,7 @@ class PhantomHourglassClient(BizHawkClient):
                         continue
                     address, value = data["progressive"][index]
                     if "give_ammo" in data:
-                        ammo_v = data["give_ammo"][max(index - 1, 0)]
+                        ammo_v = data["give_ammo"][min(max(index - 1, 0), len(data["give_ammo"]-1))]
                         write_list.append((data["ammo_address"], [ammo_v], "Main RAM"))
                     # Progressive overwrite fix
                     if "progressive_overwrite" in data and index > 1:

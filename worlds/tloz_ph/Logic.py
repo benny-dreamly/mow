@@ -19,7 +19,7 @@ def make_overworld_logic(player: int, origin_name: str, options: PhantomHourglas
         ["mercay freedle island", "mercay freedle gift", False, lambda state: ph_has_sea_chart(state, player, "SE")],
         ["mercay se", "mercay yellow guy", False, lambda state: ph_has_courage_crest(state, player)],
         ["mercay oshus", "mercay oshus gem", False, lambda state: state.has("_beat_tow", player)],
-        ["mercay oshus", "mercay oshus phantom blade", False, lambda state: ph_has_phantom_blade(state, player)],
+        ["mercay oshus", "mercay oshus phantom blade", False, lambda state: ph_can_make_phantom_sword(state, player)],
         ["mercay oshus phantom blade", "mercay oshus gem", False, None],
         ["mercay se", "sw ocean", False, lambda state: ph_has_sea_chart(state, player, "SW")],
 
@@ -159,7 +159,7 @@ def make_overworld_logic(player: int, origin_name: str, options: PhantomHourglas
 
         ["mercay island", "sw ocean east", False, lambda state: ph_boat_access(state, player)],
         ["sw ocean east", "cannon island", False, None],
-        ["sw ocean east", "ember island", False, None],
+        ["sw ocean east", "ember port", True, None],
         ["sw ocean east", "sw ocean crest salvage", False, lambda state: ph_salvage_courage_crest(state, player)],
         ["sw ocean east", "sw ocean west", False, lambda state: ph_can_enter_ocean_sw_west(state, player)],
         ["sw ocean west", "molida island", False, None],
@@ -177,11 +177,39 @@ def make_overworld_logic(player: int, origin_name: str, options: PhantomHourglas
 
         # =============== Isle of Ember ================
 
-        ["ember island", "ember island dig", False, lambda state: ph_has_shovel(state, player)],
-        ["ember island", "ember island grapple", False, lambda state: any([
-            ph_has_grapple(state, player),
-            ph_can_sword_glitch(state, player)])],
-        ["ember island", "tof 1f", False, None],
+        # ER
+        ["ember port", "ember astrid", True, None],
+        ["ember astrid", "ember astrid basement", True, None],
+        ["ember astrid basement", "ember astrid basement dig", False, lambda state: ph_has_shovel(state, player)],
+        ["ember port", "ember kayo", True, None],
+        ["ember port", "ember port house", True, None],
+        ["ember astrid", "ember astrid post tof", False, lambda state: state.has("_beat_tof", player)],
+
+        ["ember port", "ember grapple", False, lambda state: any([
+            ph_has_grapple(state, player), ph_can_sword_glitch(state, player)])],
+        ["ember grapple", "ember port", False, lambda state: ph_has_grapple(state, player)],
+        ["ember grapple", "ember coast north", True, lambda state: ph_has_grapple(state, player)],
+
+        ["ember coast north", "ember coast east", True, None],
+        ["ember port", "ember coast east", True, None],
+        ["ember climb west", "ember coast east", True, None],
+        ["ember climb west", "ember outside tof", True, None],
+        ["ember outside tof", "tof 1f", True, None],
+        ["ember summit west", "ember outside tof", True, None],
+        ["ember summit west", "ember summit east", True, None],
+        ["ember outside tof", "ember outside tof dig", False, lambda state: ph_has_shovel(state, player)],
+
+        ["ember summit west", "ember climb west", False, None],
+        ["ember summit east", "ember outside tof", False, None],
+        ["ember climb west", "ember port", False, None],
+        ["ember outside tof", "ember coast east", False, None],
+
+        ["ember climb east", "ember coast east", True, None],
+        ["ember summit north", "ember summit east", True, None],
+        ["ember climb east", "ember port", True, None],
+        ["ember summit north", "ember summit west", True, None],
+
+
 
         # =============== Temple of Fire =================
 
@@ -562,6 +590,7 @@ def create_connections(multiworld: MultiWorld, player: int, origin_name: str, op
     ]
 
     test_entrances = {(e["entrance_region"], e["exit_region"]): name for name, e in ENTRANCES.items()}
+    [print(i) for i in test_entrances]
 
     # Create connections
     for logic_array in all_logic:

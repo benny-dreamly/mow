@@ -745,9 +745,15 @@ DYNAMIC_FLAGS = {
         "set_if_true": [(0x1B558B, 0x80)]
     },
     # Oshus Items
-    "Block phantom sword crafting": {
+    "Block phantom sword crafting blade": {
         "on_scenes": [0xB0A],
         "has_items": [("Phantom Blade", 0)],
+        "not_has_locations": ["Mercay Oshus Phantom Sword"],
+        "unset_if_true": [(0x1B5592, 0x20), (0x1BA648, 0x20)]
+    },
+    "Block phantom sword crafting ph": {
+        "on_scenes": [0xB0A],
+        "has_items": [("Phantom Hourglass", 0)],
         "not_has_locations": ["Mercay Oshus Phantom Sword"],
         "unset_if_true": [(0x1B5592, 0x20), (0x1BA648, 0x20)]
     },

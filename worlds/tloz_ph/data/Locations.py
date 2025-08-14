@@ -984,14 +984,14 @@ LOCATIONS_DATA = {
 	# ========== Ember Island ============
 
 	"Isle of Ember Astrid's Basement Dig": {
-		"region_id": "ember island dig",
+		"region_id": "ember astrid basement dig",
 		"vanilla_item": "Treasure Map #3 (Gusts SW)",
 		"stage_id": 0xd,
 		"floor_id": 0x14,
 		"id": 87,
 	},
 	"Isle of Ember Grapple Chest": {
-		"region_id": "ember island grapple",
+		"region_id": "ember grapple",
 		"vanilla_item": "Courage Gem",
 		"stage_id": 0xd,
 		"floor_id": 0x0,
@@ -1000,7 +1000,7 @@ LOCATIONS_DATA = {
 		"id": 88,
 	},
 	"Isle of Ember Summit Dig": {
-		"region_id": "ember island dig",
+		"region_id": "ember outside tof dig",
 		"vanilla_item": "Treasure Map #4 (Bannan SE)",
 		"stage_id": 0xd,
 		"floor_id": 0x1,
@@ -1008,7 +1008,7 @@ LOCATIONS_DATA = {
 		"id": 89,
 	},
 	"Isle of Ember Summit Chest": {
-		"region_id": "ember island",
+		"region_id": "ember summit west",
 		"vanilla_item": "Red Rupee (20)",
 		"stage_id": 0xd,
 		"floor_id": 0x0,
@@ -1016,7 +1016,7 @@ LOCATIONS_DATA = {
 		"id": 90,
 	},
 	"Isle of Ember Astrid after Fire Temple": {
-		"region_id": "post tof",
+		"region_id": "ember astrid post tof",
 		"item_override": "Power Gem",
 		"vanilla_item": "Nothing!",
 		"stage_id": 0xd,
