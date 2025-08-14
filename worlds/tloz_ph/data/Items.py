@@ -32,13 +32,15 @@ ITEMS_DATA = {
     "Sword (Progressive)": {
         "classification": ItemClassification.progression,
         "progressive": [(0x1ba644, 0x1), (0x1ba648, 0x20)],
-        "set_bit": [(0x1ba644, 0x1)],
+        "set_bit": [(0x1ba644, 0x1), (0x1ba6b8, 1)],
         "id": 1,
     },
     "Oshus' Sword": {
         "classification": ItemClassification.progression,
         "address": 0x1ba644,
         "value": 0x1,
+        "ammo_address": 0x1ba6b8,  # used to remove sword model
+        "set_bit": [(0x1ba6b8, 1)],
         "id": 2,
     },
     "Phantom Sword": {

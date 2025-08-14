@@ -786,7 +786,7 @@ DYNAMIC_FLAGS = {
         "on_scenes": [0xB0A],
         "not_has_locations": ["Mercay Oshus Spirit Gem"],
         "has_locations": ["Temple of Wind Cyclok Dungeon Reward"],
-        "set_if_true": [(0x1B55A0, 0x4), (0x1B557D, 0x2)]
+        "set_if_true": [(0x1B55A0, 0x4), (0x1B557D, 0x2), (0x1B557F, 0x40)]
     },
     "RESET Oshus Gem hourglass": {
         "on_scenes": [0xB00],
@@ -796,6 +796,11 @@ DYNAMIC_FLAGS = {
     "RESET Oshus Gem chart": {
         "on_scenes": [0xB00],
         "unset_if_true": [(0x1B557D, 0x2)]
+    },
+    "RESET Oshus Wind Temple": {
+        "on_scenes": [0xB00],
+        "not_has_locations": ["Temple of Wind Cyclok Dungeon Reward"],
+        "unset_if_true": [(0x1B557F, 0x40)]
     },
     # Trade Quest
     "PoRL Trade Quest": {

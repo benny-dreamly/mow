@@ -39,6 +39,9 @@ def create_item_ext(
 
     return new_item
 
+def create_filler_item(world: CupheadWorld) -> Item:
+    return create_active_item(get_filler_item_name(world), world)
+
 def create_filler_items(world: CupheadWorld, filler_count: int) -> list[Item]:
     #print(f"Filler count: {filler_count}")
     rand = world.random
@@ -53,7 +56,7 @@ def create_filler_items(world: CupheadWorld, filler_count: int) -> list[Item]:
         #print(f"Total count so far: {len(_itempool)}")
         #print(f"Filler count: {filler_count}")
         #print(len(world.multiworld.precollected_items[world.player]))
-        _itempool += [create_active_item(get_filler_item_name(world), world) for _ in range(filler_count)]
+        _itempool += [create_filler_item(world) for _ in range(filler_count)]
 
     #print(f"Total count: {len(_itempool)}")
     return _itempool
@@ -307,7 +310,7 @@ def create_items(world: CupheadWorld) -> None:
 
     if world.use_dlc and world.wconfig.dlc_chalice_items_separate:
         essential_items += list(idef.item_dlc_chalice_essential.keys())
-        #supers += list(items.item_dlc_chalice_super) # TODO: Investigate addding this later
+        #supers += list(items.item_dlc_chalice_super) # TODO: Investigate adding this later
 
     # Add the grouped fill items
     itempool += create_pool_items(world, essential_items, precollected_item_names)

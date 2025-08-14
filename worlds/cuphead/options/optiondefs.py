@@ -1,9 +1,5 @@
-from typing import ClassVar, Protocol
 from Options import Toggle, DefaultOnToggle, Range, Choice, OptionSet, FreeText, Visibility
 from .optionbase import ChoiceEx, Weight, LevelDict
-
-class CupheadOption(Protocol):
-    name: ClassVar[str]
 
 class Version(FreeText):
     """
@@ -11,7 +7,7 @@ class Version(FreeText):
     The version of the APWorld
     """
     name = "version"
-    display_name = name
+    display_name = "APWorld Version"
     visibility = Visibility.spoiler
     default = "MISSINGVER"
 

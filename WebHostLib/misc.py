@@ -134,42 +134,13 @@ def tutorial(game: str, file: str):
         return abort(404)
 
 
-@app.route('/tutorial/<string:game>/<string:link>/<string:lang>')
-@cache.cached()
-def tutorial_legacy(game: str, link: str, lang: str):
-    """Legacy route to support old link-based tutorial URLs like /tutorial/game/setup/en"""
-    try:
-        theme = get_world_theme(game)
-        secure_game_name = secure_filename(game)
-        
-        # Find the tutorial that matches the old link format
-        from worlds.AutoWorld import AutoWorldRegister
-        world_type = AutoWorldRegister.world_types.get(game)
-        if not world_type or not hasattr(world_type.web, 'tutorials'):
-            return abort(404)
-        
-        # Look for a tutorial with matching link and language
-        target_file = None
-        for tutorial in world_type.web.tutorials:
-            if tutorial.link == f"{link}/{lang}":
-                target_file = tutorial.file_name.rsplit(".", 1)[0]  # Remove .md extension
-                break
-        
-        if not target_file:
-            return abort(404)
-        
-        document = render_markdown(os.path.join(
-            app.static_folder, "generated", "docs",
-            secure_game_name, target_file+".md"
-        ))
-        return render_template(
-            "markdown_document.html",
-            title=f"{game} Guide",
-            html_from_markdown=document,
-            theme=theme,
-        )
-    except FileNotFoundError:
-        return abort(404)
+@app.route('/tutorial/<string:game>/<string:file>/<string:lang>')
+def tutorial_redirect(game: str, file: str, lang: str):
+    """
+    Permanent redirect old tutorial URLs to new ones to keep search engines happy.
+    e.g. /tutorial/Archipelago/setup/en -> /tutorial/Archipelago/setup_en
+    """
+    return redirect(url_for("tutorial", game=game, file=f"{file}_{lang}"), code=301)
 
 
 @app.route('/tutorial/')

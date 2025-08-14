@@ -2,17 +2,17 @@ import os
 import typing
 import threading
 import pkgutil
+from typing import List, Set, Dict, TextIO, Tuple
 
-
-from typing import List, Set, Dict, TextIO
 from BaseClasses import Item, MultiWorld, Location, Tutorial, ItemClassification
 from Fill import fill_restrictive
 from worlds.AutoWorld import World, WebWorld
+import itertools
 import settings
 from .Items import get_item_names_per_category, item_table
 from .Locations import get_locations
-from .Regions import init_areas
-from .Options import EBOptions, eb_option_groups, StartingCharacter
+from .Regions import init_areas, connect_area_exits
+from .Options import EBOptions, eb_option_groups
 from .setup_game import setup_gamevars, place_static_items
 from .modules.enemy_data import initialize_enemies
 from .modules.flavor_data import create_flavors
@@ -21,7 +21,7 @@ from .modules.hint_data import setup_hints
 from .game_data.text_data import spoiler_psi, spoiler_starts, spoiler_badges
 from .Client import EarthBoundClient
 from .Rules import set_location_rules
-from .Rom import patch_rom, get_base_rom_path, EBProcPatch, valid_hashes
+from .Rom import patch_rom, EBProcPatch, valid_hashes
 from .game_data.static_location_data import location_ids, location_groups
 from .modules.equipamizer import EBArmor, EBWeapon
 from .modules.boss_shuffle import BossData, SlotInfo
@@ -44,7 +44,7 @@ class EBWeb(WebWorld):
 
     setup_en = Tutorial(
         "Multiworld Setup Guide",
-        "A guide to setting up the EarthBound randomizer "
+        "A guide to setting up the EarthBound randomizer"
         "and connecting to a MultiworldGG server.",
         "English",
         "setup_en.md",
@@ -66,9 +66,9 @@ class EarthBoundWorld(World):
     author: str = "Pink Switch"
     option_definitions = EBOptions
     data_version = 1
-    required_client_version = (0, 5, 0)
+    required_client_version = (0, 5, 0) 
 
-    item_name_to_id = {item: item_table[item].code for item in item_table}
+    item_name_to_id = {item: item_table[item].code for item in item_table if item_table[item].code}
     location_name_to_id = location_ids
     item_name_groups = get_item_names_per_category()
     location_name_groups = location_groups
@@ -109,6 +109,11 @@ class EarthBoundWorld(World):
         self.uncommon_gear = []
         self.rare_gear = []
         self.get_all_spheres = threading.Event()
+        self.boss_list: List[str] = []
+        self.starting_region = int
+        self.dungeon_connections = {}
+        self.has_generated_output: bool = False
+        self.hint_man_hints: List[Tuple] = []
 
         self.common_items = [
             "Cookie",
@@ -156,6 +161,7 @@ class EarthBoundWorld(World):
             "Molokheiya Soup",
             "Plain Roll",
             "Magic Tart",
+            "PSI Caramel",
             "Popsicle",
             "Bottle Rocket"
         ]
@@ -174,7 +180,6 @@ class EarthBoundWorld(World):
             "Pizza",
             "Chef's Special",
             "Super Plush Bear",
-            "PSI Caramel",
             "Jar of Delisauce",
             "Secret Herb",
             "Xterminator Spray",
@@ -198,7 +203,8 @@ class EarthBoundWorld(World):
             "Bottle of DXwater",
             "Magic Pudding",
             "Big Bottle Rocket",
-            "Bazooka"
+            "Bazooka",
+            "Meteornium"
 
         ]
 
@@ -262,19 +268,13 @@ class EarthBoundWorld(World):
         }
 
         max_count = max_counts[self.starting_character]
-        for item_name, amount in self.options.start_inventory.items():
+        for item_name, amount in itertools.chain(self.options.start_inventory.items(), self.options.start_inventory_from_pool.items()):
             if item_name in item_id_table:
                 local_space_count += amount
                 if local_space_count > max_count and not self.options.remote_items:
                     player = self.multiworld.get_player_name(self.player)
                     raise OptionError(f"{player}: starting inventory cannot place more than {max_count} items into 'Goods' for {self.starting_character}. Attempted to place {local_space_count} Goods items.")
 
-        for item_name, amount in self.options.start_inventory_from_pool.items():
-            if item_name in item_id_table:
-                local_space_count += amount
-                if local_space_count > max_count and not self.options.remote_items:
-                    player = self.multiworld.get_player_name(self.player)
-                    raise OptionError(f"{player}: starting inventory cannot place more than {max_count} items into 'Goods' for {self.starting_character}. Attempted to place {local_space_count} Goods items.")
         setup_gamevars(self)
         create_flavors(self)
         initialize_enemies(self)
@@ -288,6 +288,7 @@ class EarthBoundWorld(World):
 
     def create_regions(self) -> None:
         init_areas(self, get_locations(self))
+        connect_area_exits(self)
         place_static_items(self)
 
     def create_items(self) -> None:
@@ -350,6 +351,7 @@ class EarthBoundWorld(World):
             world.get_all_spheres.set()
 
     def generate_output(self, output_directory: str) -> None:
+        self.has_generated_output = True  # Make sure data defined in generate output doesn't get added to spoiler only mode
         try:
             patch = EBProcPatch(player=self.player, player_name=self.multiworld.player_name[self.player])
             patch.write_file("earthbound_basepatch.bsdiff4", pkgutil.get_data(__name__, "src/earthbound_basepatch.bsdiff4"))
@@ -378,12 +380,13 @@ class EarthBoundWorld(World):
 
             hint_data[self.player] = dungeon_mapping
 
-    def fill_slot_data(self) -> Dict[str, List[int]]:
+    def fill_slot_data(self) -> Dict[str, typing.Any]:
         return {
             "starting_area": self.start_location,
             "pizza_logic": self.options.monkey_caves_mode.value,
             "free_sancs": self.options.no_free_sanctuaries.value,
             "shopsanity": self.options.shop_randomizer.value,
+            "hint_man_hints": self.hint_man_hints
         }
 
     def modify_multidata(self, multidata: dict) -> None:
@@ -464,11 +467,12 @@ class EarthBoundWorld(World):
                     f" {dungeon} => {self.dungeon_connections[dungeon]}\n"
                 )
         
-        spoiler_handle.write("\nArea Levels:\n")
-        spoiler_excluded_areas = ["Ness's Mind", "Global ATM Access", "Common Condiment Shop"]
-        for area in self.area_levels:
-            if area not in spoiler_excluded_areas:
-                spoiler_handle.write(f" {area}: Level {self.area_levels[area]}\n")
+        if self.has_generated_output:
+            spoiler_handle.write("\nArea Levels:\n")
+            spoiler_excluded_areas = ["Ness's Mind", "Global ATM Access", "Common Condiment Shop"]
+            for area in self.area_levels:
+                if area not in spoiler_excluded_areas:
+                    spoiler_handle.write(f" {area}: Level {self.area_levels[area]}\n")
 
     def create_item(self, name: str) -> Item:
         data = item_table[name]
@@ -570,8 +574,8 @@ class EarthBoundWorld(World):
 
                 if item_to_counts[item.name] >= max_filler_counts[item.name]:
                     self.common_gear = [x for x in self.common_gear if x != item.name]
-                    self.uncommon_gear = [x for x in self.common_gear if x != item.name]
-                    self.rare_gear = [x for x in self.common_gear if x != item.name]
+                    self.uncommon_gear = [x for x in self.uncommon_gear if x != item.name]
+                    self.rare_gear = [x for x in self.rare_gear if x != item.name]
             pool.append(item)
 
     def get_item_pool(self, excluded_items: Set[str]) -> List[Item]:

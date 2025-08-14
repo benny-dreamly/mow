@@ -17,6 +17,22 @@ REGIONS = [
     "mercay oshus gem",
     "mercay oshus phantom blade",
 
+    # Mercay ER regions
+    "mercay sw",
+    "mercay sw bridge",
+    "mercay oshus",
+    "mercay apricot",
+    "mercay sword cave",
+
+    "mercay se",
+    "mercay tuzi",
+    "mercay milk bar",
+    "mercay shop",
+    "mercay se cc",
+    "mercay se post tof",
+    "mercay shipyard",
+    "mercay treasure teller",
+
     # Shop Regions
     "shop power gem",
     "shop bombchu bag",

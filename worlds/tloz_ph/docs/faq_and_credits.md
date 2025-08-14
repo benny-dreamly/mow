@@ -58,7 +58,6 @@ There are multiple ways of doing this, but my favorite is to create a cheat in b
 `ARM7 system bus`, and set to any speed value. Default max speed is ``0x0080``.  My favorite is `0x0200`, or 4x speed.
 Note that this forces a max speed, and makes turning weird- you'll need to toggle it on and off to do things precisely.
 
-
 ### My game crashed/I quit without saving
 
 The client should give you back your missing items when you reenter the game. It can take a while if you're missing a 
