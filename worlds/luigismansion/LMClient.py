@@ -1,4 +1,5 @@
 import asyncio, time, traceback
+import random
 from typing import Any
 
 import NetUtils, Utils
@@ -16,7 +17,7 @@ from .client.ap_link.energy_link.energy_link_client import EnergyLinkClient
 from .client.ap_link.energy_link.energy_link import EnergyLinkConstants
 from .client.ap_link.energy_link.energy_link_command_processor import EnergyLinkCommandProcessor
 
-CLIENT_VERSION = "V0.5.0"
+CLIENT_VERSION = "V0.5.3"
 
 # Load Universal Tracker modules with aliases
 tracker_loaded = False
@@ -109,6 +110,7 @@ BOO_FINAL_FLAG_BIT = 5
 LUIGI_SHOUT_ADDR = 0x804EB558
 LUIGI_SHOUT_DURATION = 3 # Time in seconds of how long the mario shout lasts.
 LUIGI_SHOUT_RAMVALUE = 0xBCB84ED4
+LUIGI_SHOUT_LIST = ["Mario?", "Marrrio", "MARIO!", "MAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAARIOOOOOOOOOOOOOOOOOOOO"]
 
 
 def read_short(console_address: int):
@@ -800,7 +802,7 @@ class LMContext(CommonContext):
         return
 
     async def yell_in_client(self) -> None:
-        logger.info("MAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAARIOOOOOOOOOOOOOOOOOOOO")
+        logger.info(random.choice(LUIGI_SHOUT_LIST))
         await wait_for_next_loop(LUIGI_SHOUT_DURATION)
         self.yelling_in_client = False
         return

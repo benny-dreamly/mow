@@ -85,12 +85,54 @@ def copy_tutorials_files_to_static(app=None) -> None:
                         with open(os.path.join(target_path, secure_filename(zfile.filename)), "wb") as f:
                             f.write(zf.read(zfile))
         else:
-            source_path = Utils.local_path(os.path.dirname(world.__file__), "docs")
-            files = os.listdir(source_path)
-            for file in files:
-                shutil.copyfile(Utils.local_path(source_path, file),
-                                Utils.local_path(target_path, secure_filename(file)))
+            world_dir = os.path.dirname(world.__file__)
+            source_path = None
+            
+            root_docs_path = Utils.local_path(world_dir, "docs")
+            if os.path.exists(root_docs_path) and os.path.isdir(root_docs_path):
+                source_path = root_docs_path
+            else:
+                source_path = find_docs_folder_recursive(world_dir)
+            
+            if source_path:
+                try:
+                    files = os.listdir(source_path)
+                    for file in files:
+                        file_path = Utils.local_path(source_path, file)
+                        if os.path.isfile(file_path):
+                            shutil.copyfile(file_path,
+                                            Utils.local_path(target_path, secure_filename(file)))
+                except (OSError, IOError) as e:
+                    logging.warning(f"Failed to copy docs for {game}: {e}")
+            else:
+                logging.info(f"No docs folder found for {game}")
 
+
+def find_docs_folder_recursive(root_dir, max_depth=3):
+    """
+    Recursively search for a "docs" folder in subdirectories.
+    Returns  Path to docs folder if found, None otherwise
+    """
+    def search_recursive(current_dir, current_depth):
+        if current_depth > max_depth:
+            return None
+        
+        try:
+            for item in os.listdir(current_dir):
+                item_path = os.path.join(current_dir, item)
+                if os.path.isdir(item_path):
+                    if item == "docs":
+                        return item_path
+                    # Recursively search subdirectories
+                    result = search_recursive(item_path, current_depth + 1)
+                    if result:
+                        return result
+        except (OSError, PermissionError):
+            pass
+        
+        return None
+    
+    return search_recursive(root_dir, 0)
 
 if __name__ == "__main__":
     multiprocessing.freeze_support()
