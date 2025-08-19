@@ -331,10 +331,6 @@ for name, data in ENTRANCE_DATA.items():
         counter[point] += 1
 
 
-print({key: value for key, value in counter.items() if value != 1})
-
-
-
 if __name__ == "__main__":
     for name, data in ENTRANCES.items():
         print(f"{name}:", "{")

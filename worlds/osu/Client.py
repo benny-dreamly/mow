@@ -8,6 +8,7 @@ import webbrowser
 import time
 import ast
 import Utils
+apname = Utils.instance_name if Utils.instance_name else "Archipelago"
 import ModuleUpdate
 
 osu_base_id = 727000000
@@ -412,7 +413,7 @@ class APosuClientCommandProcessor(ClientCommandProcessor):
                 # Combine all the chunks into one just like req.read() would do
                 content = b"".join(downloaded_content)
             f = f'{beatmapset["id"]} {beatmapset["artist"]} - {beatmapset["title"]}.osz'
-            filename = "".join(i for i in f if i not in "\/:*?<>|\"")
+            filename = "".join(i for i in f if i not in r"\/:*?<>|\"")
             path = os.path.join(self.ctx.game_communication_path, 'config')
 
             if not os.path.exists(path):
@@ -521,7 +522,7 @@ class APosuContext(CommonContext):
             logging_pairs = [
                 ("Client", "Archipelago")
             ]
-            base_title = "MultiworldGG osu! Client"
+            base_title = f"{apname} osu! Client"
 
         self.ui = OsuManager(self)
         self.ui_task = asyncio.create_task(self.ui.async_run(), name="UI")
@@ -605,7 +606,7 @@ async def download_next_beatmapset_silent(ctx, task):
             print(f'Download Failed, Status Code: {req_status}')
             return
         f = f'{beatmapset["id"]} {beatmapset["artist"]} - {beatmapset["title"]}.osz'
-        filename = "".join(i for i in f if i not in "\/:*?<>|\"")
+        filename = "".join(i for i in f if i not in r"\/:*?<>|\"")
         path = os.path.join(ctx.game_communication_path, 'config')
 
         if not os.path.exists(path):
@@ -644,7 +645,7 @@ async def download_next_beatmapset(self, task):
             self.output(f'Download Failed, Status Code: {req_status}')
             return
         f = f'{beatmapset["id"]} {beatmapset["artist"]} - {beatmapset["title"]}.osz'
-        filename = "".join(i for i in f if i not in "\/:*?<>|\"")
+        filename = "".join(i for i in f if i not in r"\/:*?<>|\"")
         path = os.path.join(self.ctx.game_communication_path, 'config')
 
         if not os.path.exists(path):

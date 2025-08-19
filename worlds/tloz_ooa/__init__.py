@@ -91,11 +91,12 @@ class OracleOfAgesWorld(World):
     Gather the Essences of Times, exorcice Nayru and defeat Veran to save the timeline of Labrynna
     """
     game = "The Legend of Zelda - Oracle of Ages"
-    author: str = "Dinopony"
+    author: str = "Dinopony, Piapiou, & Mael"
     options_dataclass = OracleOfAgesOptions
     options: OracleOfAgesOptions
-    required_client_version = (0, 4, 5)
+    required_client_version = (0, 5, 1)
     web = OracleOfAgesWeb()
+    topology_present = True
 
     location_name_to_id = build_location_name_to_id_dict()
     item_name_to_id = build_item_name_to_id_dict()

@@ -56,6 +56,8 @@ app.config["PONY"] = {
 }
 app.config["MAX_ROLL"] = 20
 app.config["CACHE_TYPE"] = "SimpleCache"
+app.config["CACHE_DEFAULT_TIMEOUT"] = 300  # 5 minutes default
+app.config["CACHE_KEY_PREFIX"] = "multiworld_"
 app.config["HOST_ADDRESS"] = ""
 app.config["ASSET_RIGHTS"] = False
 
