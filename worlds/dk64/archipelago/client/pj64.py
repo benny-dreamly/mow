@@ -7,9 +7,7 @@ import pkgutil
 from configparser import ConfigParser
 import sys
 import subprocess
-from Utils import open_filename
-from Utils import get_settings
-from Utils import init_logging
+from Utils import open_filename, get_settings, init_logging
 import uuid
 
 if __name__ == "__main__":

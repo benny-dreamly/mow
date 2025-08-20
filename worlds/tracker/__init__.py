@@ -20,7 +20,7 @@ def launch_client(*args):
     from .TrackerClient import launch as TCMain
     launch(TCMain, name="Universal Tracker client", args=args)
 
-UT_VERSION = "v0.2.12 UNSTABLE2.3"
+UT_VERSION = "v0.2.15"
 
 class CurrentTrackerState(NamedTuple):
     all_items: Counter
@@ -72,6 +72,7 @@ class TrackerWorld(World):
 
     # to make auto world register happy so we can register our settings
     game = "Universal Tracker"
+    author: str = "Faris"
     hidden = True
     item_name_to_id = {}
     location_name_to_id = {}

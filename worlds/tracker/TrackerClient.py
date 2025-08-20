@@ -11,7 +11,10 @@ from typing import Union, Any, TYPE_CHECKING
 
 from BaseClasses import CollectionState, MultiWorld, LocationProgressType, ItemClassification
 from worlds.generic.Rules import exclusion_rules
-from Utils import __version__, output_path, open_filename,async_start
+from Utils import __version__, output_path, open_filename,async_start,instance_name
+
+apname = instance_name if instance_name else "Archipelago"
+
 from worlds import AutoWorld
 from . import TrackerWorld, UTMapTabData, CurrentTrackerState,UT_VERSION
 from .TrackerCore import TrackerCore
@@ -170,6 +173,15 @@ class TrackerCommandProcessor(ClientCommandProcessor):
             return
         get_logical_path(self.ctx, location_name)
 
+    def _cmd_faris_asked(self):
+        """Print out the error message and any other information we think might be useful"""
+        print("We're in commands")
+        if self.ctx.tracker_core is not None:
+            logger.error(self.ctx.tracker_core.gen_error)
+            if self.ctx.tracker_core.launch_multiworld is not None:
+                known_slots = [f"{slot_name} ({self.ctx.tracker_core.launch_multiworld.worlds[slot_id].game})" for slot_name, slot_id in self.ctx.tracker_core.launch_multiworld.world_name_lookup.items() if self.ctx.tracker_core.launch_multiworld.worlds[slot_id].game != "Archipelago"]
+                logger.error(f"Known slots = [{', '.join(known_slots)}]")
+
 
 def cmd_load_map(self: TrackerCommandProcessor, map_id: str = "0"):
     """Force a poptracker map id to be loaded"""
@@ -269,6 +281,8 @@ class TrackerGameContext(CommonContext):
             self.disconnected_intentionally = True
             async_start(self.disconnect(False), name="disconnecting")
             raise e
+        if updateTracker_ret.state is None:
+            return updateTracker_ret # core.updateTracker failed, just pass it along
         if self.tracker_page:
             self.tracker_page.refresh_from_data()
         if self.update_callback is not None:
@@ -506,7 +520,7 @@ class TrackerGameContext(CommonContext):
             def __init__(self, **kwargs):
                 super().__init__(**kwargs)
                 self.data = []
-                self.data.append({"text": f"Tracker {UT_VERSION} Initializing for AP version {__version__}"})
+                self.data.append({"text": f"Tracker {UT_VERSION} Initializing for {apname} version {__version__}"})
 
             def resetData(self):
                 self.data.clear()
@@ -739,7 +753,7 @@ class TrackerGameContext(CommonContext):
             loc_border = NumericProperty(5)
             enable_map = BooleanProperty(False)
             iconSource = StringProperty("")
-            base_title = f"Tracker {UT_VERSION} for AP version"  # core appends ap version so this works
+            base_title = f"Tracker {UT_VERSION} for {apname} version"  # core appends ap version so this works
 
             def build(self):
                 class TrackerHintLabel(HintLabel):
@@ -837,7 +851,9 @@ class TrackerGameContext(CommonContext):
                 if self.checksums[self.game] != connected_cls.get_data_package_data()["checksum"]:
                     logger.warning("*****\nWarning: the local datapackage for the connected game does not match the server's datapackage\n*****")
                 self.tracker_core.initalize_tracker_core(connected_cls,args["slot_data"])
-
+                if not self.tracker_core.multiworld:
+                    logger.error("Internal generation failed, something has gone wrong")
+                    logger.error("Run the /faris_asked command and post the results in the discord")
                 if self.ui is not None and hasattr(connected_cls, "tracker_world"):
                     self.tracker_world = UTMapTabData(self.slot, self.team, **connected_cls.tracker_world)
                     self.load_pack()
@@ -1095,6 +1111,8 @@ def launch(*args):
 
     asyncio.run(main(args))
 
+def updateTracker(ctx: TrackerGameContext):
+    return ctx.updateTracker()
 
 if __name__ == "__main__":
     launch(*sys.argv[1:])

@@ -119,7 +119,7 @@ if baseclasses_loaded:
     from randomizer.Enums.Items import Items as DK64RItems
     from randomizer.SettingStrings import decrypt_settings_string_enum
     from archipelago.Items import DK64Item, full_item_table, setup_items
-    from archipelago.Options import DK64Options, Goal, SwitchSanity
+    from archipelago.Options import DK64Options, Goal, SwitchSanity, dk64_option_groups
     from archipelago.Regions import all_locations, create_regions, connect_regions
     from archipelago.Rules import set_rules
     from archipelago.client.common import check_version
@@ -244,6 +244,7 @@ if baseclasses_loaded:
         setup_en = Tutorial("Multiworld Setup Guide", "A guide to setting up the Donkey Kong 64 randomizer connected to a MultiworldGG Multiworld.", "English", "setup_en.md", "setup/en", ["PoryGone"])
 
         tutorials = [setup_en]
+        option_groups = dk64_option_groups
 
     class DK64World(World):
         """Donkey Kong 64 is a 3D collectathon platforming game.
@@ -368,6 +369,15 @@ if baseclasses_loaded:
                     res.add(item)
             return res
 
+        def key_item_group() -> str:
+            """Item group for Keys."""
+            res = set()
+            key_items = ["Key 1", "Key 2", "Key 3", "Key 4", "Key 5", "Key 6", "Key 7", "Key 8"]
+            for item in key_items:
+                if item in full_item_table:
+                    res.add(item)
+            return res
+
         def kong_item_group() -> str:
             """Item group for Kongs."""
             res = set()
@@ -445,7 +455,7 @@ if baseclasses_loaded:
             """Location group for Factory locations."""
             res = set()
             for location_name in all_locations.keys():
-                if location_name.startswith("Factory"):
+                if location_name.startswith("Factory") or location_name.startswith("DK Arcade"):
                     res.add(location_name)
             return res
 
@@ -453,7 +463,7 @@ if baseclasses_loaded:
             """Location group for Galleon locations."""
             res = set()
             for location_name in all_locations.keys():
-                if location_name.startswith("Galleon"):
+                if location_name.startswith("Galleon") or location_name.startswith("Treasure Chest"):
                     res.add(location_name)
             return res
 
@@ -500,6 +510,8 @@ if baseclasses_loaded:
             for location_name in all_locations.keys():
                 if location_name.startswith("Helm") and location_name not in excluded_locations:
                     res.add(location_name)
+                if location_name == "The End of Helm":
+                    res.add(location_name)
             return res
 
         def medal_locations() -> str:
@@ -510,25 +522,34 @@ if baseclasses_loaded:
                     res.add(location_name)
             return res
 
+        def boss_locations() -> str:
+            """Location group for Boss locations."""
+            res = set()
+            for location_name in all_locations.keys():
+                if "Boss Defeated" in location_name:
+                    res.add(location_name)
+            return res
+
         item_name_groups = {
             "Blueprints": blueprint_item_group(),
             "Guns": gun_item_group(),
-            "Intrument": inst_item_group(),
+            "Instruments": inst_item_group(),
             "Shared Moves": shared_item_group(),
-            "Transformation Barrel": barrels_item_group(),
-            "Active Move": active_item_group(),
-            "Pad Move": pad_item_group(),
-            "DK Move": dk_item_group(),
-            "Diddy Move": diddy_item_group(),
-            "Lanky Move": lanky_item_group(),
-            "Tiny Move": tiny_item_group(),
-            "Chunky Move": chunky_item_group(),
+            "Transformation Barrels": barrels_item_group(),
+            "Active Moves": active_item_group(),
+            "Pad Moves": pad_item_group(),
+            "DK Moves": dk_item_group(),
+            "Diddy Moves": diddy_item_group(),
+            "Lanky Moves": lanky_item_group(),
+            "Tiny Moves": tiny_item_group(),
+            "Chunky Moves": chunky_item_group(),
             "Donkey Kong": dk_name(),
             "Diddy Kong": diddy_name(),
             "Lanky Kong": lanky_name(),
             "Tiny Kong": tiny_name(),
             "Chunky Kong": chunky_name(),
-            "Kong": kong_item_group(),
+            "Keys": key_item_group(),
+            "Kongs": kong_item_group(),
         }
 
         location_name_groups = {
@@ -542,6 +563,7 @@ if baseclasses_loaded:
             "Creepy Castle": castle_locations(),
             "Hideout Helm": helm_locations(),
             "Banana Medals": medal_locations(),
+            "Bosses": boss_locations(),
         }
 
         # with open("donklocations.txt", "w") as f:
@@ -611,14 +633,8 @@ if baseclasses_loaded:
             settings_dict["rareware_gb_fairies"] = self.options.rareware_gb_fairies.value
             settings_dict["mirror_mode"] = self.options.mirror_mode.value
             settings_dict["hard_mode"] = self.options.hard_mode.value
-            # Blocker settings
-            if self.options.enable_chaos_blockers.value:
-                settings_dict["blocker_text"] = self.options.chaos_ratio.value
-                settings_dict["blocker_selection_behavior"] = BLockerSetting.chaos
-            else:
-                settings_dict["blocker_text"] = self.options.blocker_max.value
-
-            settings_dict["randomize_blocker_required_amounts"] = self.options.randomize_blocker_required_amounts.value
+            settings_dict["key_8_helm"] = self.options.key8_lock.value
+            settings_dict["shuffle_helm_location"] = self.options.shuffle_helm_level_order.value
             settings_dict["mermaid_gb_pearls"] = self.options.mermaid_gb_pearls.value
 
             # Level blocker settings
@@ -633,8 +649,20 @@ if baseclasses_loaded:
                 self.options.level8_blocker,
             ]
 
-            for i, blocker in enumerate(blocker_options):
-                settings_dict[f"blocker_{i}"] = blocker.value
+            # Blocker settings - prioritize chaos blockers, then randomization setting
+            settings_dict["maximize_helm_blocker"] = self.options.maximize_helm_blocker.value
+            if self.options.enable_chaos_blockers.value:
+                settings_dict["blocker_text"] = self.options.chaos_ratio.value
+                settings_dict["blocker_selection_behavior"] = BLockerSetting.chaos
+            elif self.options.randomize_blocker_required_amounts.value:
+                settings_dict["blocker_text"] = self.options.blocker_max.value
+                settings_dict["blocker_selection_behavior"] = BLockerSetting.normal_random
+            else:  # randomize_blocker_required_amounts is False and chaos blockers is False
+                settings_dict["blocker_text"] = self.options.blocker_max.value
+                settings_dict["blocker_selection_behavior"] = BLockerSetting.pre_selected
+                # When using pre-selected, we need to set the blocker values
+                for i, blocker in enumerate(blocker_options):
+                    settings_dict[f"blocker_{i}"] = blocker.value
 
             # Item randomization
             settings_dict["item_rando_list_selected"] = []
@@ -845,6 +873,16 @@ if baseclasses_loaded:
             if self.options.goal == Goal.option_dk_rap:
                 settings_dict["win_condition_item"] = WinConditionComplex.dk_rap_items
 
+            settings_dict["starting_moves_list_1"] = []
+            for item in self.options.start_inventory:
+                item_obj = DK64RItem.ItemList[logic_item_name_to_id.get(item)]
+                if item_obj.type not in [Types.Key, Types.Shop, Types.Shockwave, Types.TrainingBarrel, Types.Climbing, Types.Cranky, Types.Funky, Types.Candy, Types.Snide]:
+                    # Ensure that the items in the start inventory are only keys, shops, shockwaves, training barrels, climbing items, or shop owners
+                    raise ValueError(f"Invalid item type for starting inventory: {item}. Starting inventory can only contain keys, shopkeepers, or moves.")
+                elif self.options.shopowners_in_pool.value and item_obj.type in [Types.Cranky, Types.Funky, Types.Candy, Types.Snide]:
+                    settings_dict["starting_moves_list_1"].append(item_obj.type)
+            settings_dict["starting_moves_list_count_1"] = len(settings_dict["starting_moves_list_1"])
+
             # Create settings object
             settings = Settings(settings_dict, self.random)
             # Archipelago really wants the number of locations to match the number of items. Keep track of how many locations we've made here
@@ -901,12 +939,6 @@ if baseclasses_loaded:
             # Undo any changes to this location's name, until we find a better way to prevent this from confusing the tracker and the AP code that is responsible for sending out items
             self.spoiler.LocationList[DK64RLocations.FactoryDonkeyDKArcade].name = "Factory Donkey DK Arcade Round 1"
             self.spoiler.settings.shuffled_location_types.append(Types.ArchipelagoItem)
-
-            for item in self.options.start_inventory:
-                item_obj = DK64RItem.ItemList[logic_item_name_to_id.get(item)]
-                if item_obj.type not in [Types.Key, Types.Shop, Types.Shockwave, Types.TrainingBarrel, Types.Climbing, Types.Cranky, Types.Funky, Types.Candy, Types.Snide]:
-                    # Ensure that the items in the start inventory are only keys, shops, shockwaves, training barrels, climbing items, or shop owners
-                    raise ValueError(f"Invalid item type for starting inventory: {item}. Starting inventory can only contain keys or moves.")
 
             Generate_Spoiler(self.spoiler)
             # Handle Loading Zones - this will handle LO and (someday?) LZR appropriately
@@ -976,7 +1008,7 @@ if baseclasses_loaded:
                 for item in self.multiworld.precollected_items[self.player]:
                     dk64_item = logic_item_name_to_id[item.name]
                     # Only moves can be pushed to the pregiven_items list
-                    if DK64RItem.ItemList[dk64_item].type in [Types.Shop, Types.Shockwave, Types.TrainingBarrel, Types.Climbing]:
+                    if DK64RItem.ItemList[dk64_item].type in [Types.Shop, Types.Shockwave, Types.TrainingBarrel, Types.Climbing, Types.Cranky, Types.Funky, Types.Candy, Types.Snide]:
                         spoiler.pregiven_items.append(dk64_item)
                 local_trap_count = 0
                 ap_item_is_major_item = False
@@ -1060,9 +1092,20 @@ if baseclasses_loaded:
 
                 if microhints_enabled:
                     # Finalize microhints
-                    shopkeepers = [DK64RItems.Candy, DK64RItems.Cranky, DK64RItems.Funky, DK64RItems.Snide]
-                    helm_prog_items = [DK64RItems.BaboonBlast, DK64RItems.BaboonBalloon, DK64RItems.Monkeyport, DK64RItems.GorillaGrab, DK64RItems.ChimpyCharge, DK64RItems.GorillaGone]
-                    instruments = [DK64RItems.Bongos, DK64RItems.Guitar, DK64RItems.Trombone, DK64RItems.Saxophone, DK64RItems.Triangle]
+                    if self.options.shopkeeper_hints.value:
+                        shopkeepers = [DK64RItems.Candy, DK64RItems.Cranky, DK64RItems.Funky, DK64RItems.Snide]
+                    else:
+                        shopkeepers = []
+                    # Define helm_prog_items only when microhints is "some" or "all"
+                    if self.options.microhints.value in [1, 2]:  # some or all
+                        helm_prog_items = [DK64RItems.BaboonBlast, DK64RItems.BaboonBalloon, DK64RItems.Monkeyport, DK64RItems.GorillaGrab, DK64RItems.ChimpyCharge, DK64RItems.GorillaGone]
+                    else:
+                        helm_prog_items = []
+                    # Define instruments only when microhints is "all"
+                    if self.options.microhints.value == 2:  # all
+                        instruments = [DK64RItems.Bongos, DK64RItems.Guitar, DK64RItems.Trombone, DK64RItems.Saxophone, DK64RItems.Triangle]
+                    else:
+                        instruments = []
                     hinted_slams = []
                     if DK64RItems.ProgressiveSlam in self.foreignMicroHints.keys() and DK64RItems.ProgressiveSlam in self.spoiler.microhints:
                         # Break down the slam hint to retrieve raw data
@@ -1072,19 +1115,24 @@ if baseclasses_loaded:
                         hinted_slams.split(" or ")
                     for hintedItem in self.foreignMicroHints.keys():
                         text = ""
-                        if hintedItem in instruments or hintedItem in helm_prog_items:
+                        if hintedItem in helm_prog_items and self.options.microhints.value in [1, 2]:
+                            text = f"\x07{self.foreignMicroHints[hintedItem][0]}\x07 would be better off looking in \x07{self.foreignMicroHints[hintedItem][1]}\x07 for this.".upper()
+                        elif hintedItem in instruments and self.options.microhints.value == 2:
                             text = f"\x07{self.foreignMicroHints[hintedItem][0]}\x07 would be better off looking in \x07{self.foreignMicroHints[hintedItem][1]}\x07 for this.".upper()
                         elif hintedItem == DK64RItems.ProgressiveSlam:
                             for slam in self.foreignMicroHints[DK64RItems.ProgressiveSlam]:
                                 hinted_slams.append(f"\x07{slam[0]}: {slam[1]}\x07")
                             slam_text = " or ".join(hinted_slams)
                             text = f"Ladies and Gentlemen! It appears that one fighter has come unequipped to properly handle this reptilian beast. Perhaps they should have looked in {slam_text} for the elusive slam.".upper()
-                        elif hintedItem in shopkeepers:
+                        elif self.options.shopkeeper_hints.value and hintedItem in shopkeepers:
                             text = f"{hintedItem.name} has gone on a space mission to \x07{self.foreignMicroHints[hintedItem][0]}'s\x07 \x0d{self.foreignMicroHints[hintedItem][1]}\x0d.".upper()
-                        for letter in text:
-                            if letter not in "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789.,!?:;'S-()% \x04\x05\x06\x07\x08\x09\x0a\x0b\x0c\x0d":
-                                text = text.replace(letter, " ")
-                        self.spoiler.microhints[DK64RItem.ItemList[hintedItem].name] = text
+
+                        # Only create microhint if we have text to display
+                        if text:
+                            for letter in text:
+                                if letter not in "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789.,!?:;'S-()% \x04\x05\x06\x07\x08\x09\x0a\x0b\x0c\x0d":
+                                    text = text.replace(letter, " ")
+                            self.spoiler.microhints[DK64RItem.ItemList[hintedItem].name] = text
 
                 spoiler.majorItems = IdentifyMajorItems(spoiler)
                 if ap_item_is_major_item:
